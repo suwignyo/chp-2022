@@ -1,13 +1,22 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Button, Input, Text } from "@chakra-ui/react";
 import { Hero } from "../../components/Hero";
 import { Container } from "../../components/Container";
 import { Main } from "../../components/Main";
 import { useForm } from "react-hook-form";
-// import { getFirestore } from "firebase/firestore";
-// import app from "../../util/firebase";
+import { db } from "../../util/initFirebase";
+
+import { collection, getDocs } from "@firebase/firestore";
 
 const SaveTheDate = () => {
+  const [guests, setGuests] = useState([]);
+  const guestCollection = collection(db, "guests");
+
+  const getGuests = async () => {
+    const data = await getDocs(guestCollection);
+    console.log("data", data);
+    setGuests(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+  };
   const { register, handleSubmit } = useForm({
     shouldUseNativeValidation: true,
   });
@@ -16,18 +25,10 @@ const SaveTheDate = () => {
     console.log(data);
   };
 
-  // useEffect(async () => {
-  //   app();
-  //   const db = getFirestore();
-
-  //   const cityRef = db.collection("guests");
-  //   const doc = await cityRef.get();
-  //   if (!doc.exists) {
-  //     console.log("No such document!");
-  //   } else {
-  //     console.log("Document data:", doc.data());
-  //   }
-  // }, []);
+  useEffect(() => {
+    getGuests();
+  }, []);
+  console.log("guests", guests);
 
   return (
     <Container height="100vh">
@@ -56,9 +57,5 @@ const SaveTheDate = () => {
     </Container>
   );
 };
-
-// you can still disabled the native validation, CSS selectors such as
-// invalid and valid still going to work
-// <form onSubmit={handleSubmit(onSubmit)} novalidate>
 
 export default SaveTheDate;
