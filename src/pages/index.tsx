@@ -18,20 +18,15 @@ import { Layout } from "../components/Layout";
 import { NavBar } from "../components/NavBar";
 import image from "../images/003.jpg";
 
-const scroll = keyframes`
-  0% {opacity: 1;}
-  100% {opacity: 0; transform: translateY(46px);}
-`;
-
-const scrollAnimation = `${scroll} infinite 1s`;
 const Index = () => (
   <>
-    {/* <Box
+    <Box
       position="absolute"
       height="100%"
       width="100%"
       background="linear-gradient(180deg,transparent 0,transparent 5%,rgba(0,0,0,.4))"
-    ></Box> */}
+      boxShadow="inset 2000px 0 0 0 rgba(0, 0, 0, 0.5)"
+    ></Box>
     <Box
       backgroundImage={image.src}
       backgroundPosition="center"
@@ -44,40 +39,7 @@ const Index = () => (
       width="100%"
       position="fixed"
     >
-      <Flex
-        flex={1}
-        alignItems="center"
-        justifyContent="center"
-        height="100vh"
-        flexDirection="column"
-      >
-        <Heading color="white">Gerry &amp; Michelle</Heading>
-        <Heading color="white">10.15.2022</Heading>
-        <Box
-          width={"40px"}
-          height={70}
-          boxShadow="inset 0 0 0 1px white"
-          borderRadius="25px"
-          animation="fadeIn"
-          marginTop={"70vh"}
-          position="absolute"
-          _before={{
-            content: '""',
-            width: "8px",
-            height: "8px",
-            background: "white",
-            marginLeft: "-4px",
-            top: "8px",
-            borderRadius: "4px",
-            // animationDuration: "1.5s",
-            // animationIterationCount: "infinite",
-            // animationName: "scroll",
-            animation: scrollAnimation,
-            position: "absolute",
-            left: "50%",
-          }}
-        ></Box>
-      </Flex>
+      <Main />
       <Flex
         flex={1}
         alignItems="center"

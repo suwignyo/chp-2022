@@ -1,22 +1,15 @@
-import {
-  Flex,
-  useColorMode,
-  FlexProps,
-  Input,
-  Box,
-  Button,
-  Text,
-  Heading,
-} from "@chakra-ui/react";
+import { Input, Box, Button, Text, Heading, Flex } from "@chakra-ui/react";
 import {
   createUserWithEmailAndPassword,
-  onAuthStateChanged,
+  GoogleAuthProvider,
+  signInWithEmailAndPassword,
+  signInWithPopup,
   signOut,
-  User,
 } from "firebase/auth";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { auth } from "../util/initFirebase";
+import { useAuth } from "../util/useAuth";
 
 type FormInputs = {
   email: string;
@@ -27,14 +20,34 @@ export const Login = (props) => {
   const { register, handleSubmit } = useForm<FormInputs>({
     shouldUseNativeValidation: true,
   });
-  const [user, setUser] = useState<User | null>(null);
 
-  onAuthStateChanged(auth, (currentUser) => {
-    console.log("currentUser", currentUser);
-    setUser(currentUser);
-  });
+  const [isSigningUp, setSigningUp] = useState<boolean>(false);
+  const { user } = useAuth();
 
-  const login = async () => {};
+  const googleProvider = new GoogleAuthProvider();
+
+  const signInWithGoogle = () => {
+    signInWithPopup(auth, googleProvider)
+      .then((result) => {
+        console.log("result", result);
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
+  };
+
+  const login = async (data: FormInputs) => {
+    try {
+      const user = await signInWithEmailAndPassword(
+        auth,
+        data.email,
+        data.password
+      );
+      console.log("user", user);
+    } catch (error) {
+      console.log("error", error.message);
+    }
+  };
   const registerUser = async (data: FormInputs) => {
     console.log("data", data);
     try {
@@ -43,7 +56,6 @@ export const Login = (props) => {
         data.email,
         data.password
       );
-      setUser;
       console.log("user", user);
     } catch (error) {
       console.log("error", error.message);
@@ -55,8 +67,10 @@ export const Login = (props) => {
 
   return (
     <Box padding={6}>
-      <Heading textAlign={"center"}>Login</Heading>
-      <form onSubmit={handleSubmit(registerUser)}>
+      <Heading textAlign={"center"}>
+        {isSigningUp ? "Register" : "Login"}
+      </Heading>
+      <form onSubmit={handleSubmit(isSigningUp ? registerUser : login)}>
         <Input
           {...register("email", {
             required: "Email is required",
@@ -72,16 +86,27 @@ export const Login = (props) => {
           type="password"
           mt={6}
         />
-        <Box textAlign={"right"}>
-          <Button mt="6" type="submit">
-            Login
+        <Flex justifyContent="space-between" textAlign={"right"}>
+          <Button
+            mt="6"
+            size="sm"
+            variant="link"
+            onClick={() => setSigningUp((prevState) => !prevState)}
+          >
+            {isSigningUp ? "Login" : "Register"}
           </Button>
-        </Box>
+          <Button mt="6" type="submit">
+            {isSigningUp ? "Register" : "Login"}
+          </Button>
+        </Flex>
         <Text>{user ? user.email : "no user logged in"}</Text>
       </form>
-      {/* <Button type="button" onClick={logout}>
+      <Button type="button" onClick={logout}>
         Logout
-      </Button> */}
+      </Button>
+      <Button type="button" onClick={signInWithGoogle}>
+        Google
+      </Button>
     </Box>
   );
 };
