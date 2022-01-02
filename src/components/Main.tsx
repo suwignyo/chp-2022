@@ -1,13 +1,16 @@
-import { Stack, StackProps } from '@chakra-ui/react'
+import { Box, BoxProps, Stack, StackProps } from "@chakra-ui/react";
 
-export const Main = (props: StackProps) => (
-  <Stack
-    spacing="1.5rem"
-    width="100%"
-    maxWidth="48rem"
-    mt="-45vh"
-    pt="8rem"
-    px="1rem"
-    {...props}
-  />
-)
+export const Main = ({ children }: BoxProps) => (
+  <>
+    <Box
+      backgroundImage="https://source.unsplash.com/random/1920x1080"
+      backgroundPosition="center"
+      backgroundRepeat="no-repeat"
+      height="100vh"
+      width="100vw"
+      opacity={0.8}
+      position="absolute"
+    ></Box>
+    {children}
+  </>
+);

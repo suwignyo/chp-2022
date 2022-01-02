@@ -4,7 +4,7 @@ import { Hero } from "../../components/Hero";
 import { Container } from "../../components/Container";
 import { Main } from "../../components/Main";
 import { useForm } from "react-hook-form";
-import { db } from "../../util/initFirebase";
+// import { db } from "../../util/initFirebase";
 
 import { collection, getDocs, addDoc } from "@firebase/firestore";
 
