@@ -1,28 +1,54 @@
-import { Input, Box, Button, Text, Heading, Flex } from "@chakra-ui/react";
+import {
+  Input,
+  Box,
+  Button,
+  Text,
+  Heading,
+  Flex,
+  FormErrorMessage,
+  FormControl,
+  FormLabel,
+  Image,
+} from "@chakra-ui/react";
 import {
   createUserWithEmailAndPassword,
   GoogleAuthProvider,
   signInWithEmailAndPassword,
   signInWithPopup,
-  signOut,
 } from "firebase/auth";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { auth } from "../util/initFirebase";
 import { useAuth } from "../util/useAuth";
+import googleImage from "../images/google.png";
 
 type FormInputs = {
   email: string;
   password: string;
 };
 
-export const Login = (props) => {
-  const { register, handleSubmit } = useForm<FormInputs>({
-    shouldUseNativeValidation: true,
-  });
+const initialValues = {
+  email: "",
+  password: "",
+};
 
+export const Login = (props) => {
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors, isSubmitting },
+    reset,
+  } = useForm<FormInputs>({
+    shouldUseNativeValidation: true,
+    defaultValues: initialValues,
+  });
+  // const [authError, setAuthError] = useState<string | null>(null);
+  console.log("ERRORS", errors);
+  const { push } = useRouter();
   const [isSigningUp, setSigningUp] = useState<boolean>(false);
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
 
   const googleProvider = new GoogleAuthProvider();
 
@@ -42,10 +68,20 @@ export const Login = (props) => {
         auth,
         data.email,
         data.password
-      );
+      ).then(() => {
+        push("/save-the-date");
+      });
       console.log("user", user);
     } catch (error) {
-      console.log("error", error.message);
+      console.log("error", error);
+      if (error.message.includes("auth/user-not-found")) {
+        setError("email", { message: "User not found, please register" });
+      }
+      if (error.message.includes("auth/wrong-password")) {
+        setError("email", {
+          message: "You have entered an invalid username or password",
+        });
+      }
     }
   };
   const registerUser = async (data: FormInputs) => {
@@ -55,58 +91,82 @@ export const Login = (props) => {
         auth,
         data.email,
         data.password
-      );
+      ).then(() => {
+        push("/save-the-date");
+      });
       console.log("user", user);
     } catch (error) {
       console.log("error", error.message);
     }
   };
-  const logout = async () => {
-    await signOut(auth);
-  };
 
   return (
-    <Box padding={6}>
+    <Box padding={6} width="100%">
       <Heading textAlign={"center"}>
         {isSigningUp ? "Register" : "Login"}
       </Heading>
-      <form onSubmit={handleSubmit(isSigningUp ? registerUser : login)}>
-        <Input
-          {...register("email", {
-            required: "Email is required",
-          })} // custom message
-          placeholder="Email"
-          mt="6"
-        />
-        <Input
-          {...register("password", {
-            required: "Password is required",
-          })} // custom message
-          placeholder="Password"
-          type="password"
-          mt={6}
-        />
-        <Flex justifyContent="space-between" textAlign={"right"}>
-          <Button
-            mt="6"
-            size="sm"
-            variant="link"
-            onClick={() => setSigningUp((prevState) => !prevState)}
-          >
-            {isSigningUp ? "Login" : "Register"}
-          </Button>
-          <Button mt="6" type="submit">
-            {isSigningUp ? "Register" : "Login"}
-          </Button>
-        </Flex>
-        <Text>{user ? user.email : "no user logged in"}</Text>
-      </form>
+      <FormControl isInvalid={!!errors.email || !!errors.password}>
+        <form onSubmit={handleSubmit(isSigningUp ? registerUser : login)}>
+          <FormLabel mt={4} htmlFor="email">
+            Email
+          </FormLabel>
+          <Input
+            {...register("email", {
+              required: "Email is required",
+            })} // custom message
+            placeholder="hello@example.com"
+            id="email"
+          />
+          <FormLabel mt={4} htmlFor="password">
+            Password
+          </FormLabel>
+          <Input
+            {...register("password", {
+              required: "Password is required",
+            })} // custom message
+            placeholder="********"
+            type="password"
+            id="password"
+          />
+          <FormErrorMessage>{errors?.email?.message}</FormErrorMessage>
+          <Flex justifyContent="space-between" textAlign={"right"}>
+            <Button
+              mt="4"
+              size="sm"
+              variant="link"
+              onClick={() => {
+                reset(initialValues);
+                setSigningUp((prevState) => !prevState);
+              }}
+            >
+              {isSigningUp ? "Login" : "Register"}
+            </Button>
+            <Button
+              mt="4"
+              type="submit"
+              isLoading={isSubmitting}
+              disabled={isSubmitting}
+            >
+              {isSigningUp ? "Register" : "Login"}
+            </Button>
+          </Flex>
+        </form>
+      </FormControl>
+      <Flex alignItems="center" justifyContent="center" flex={1} mt={6}>
+        <Button type="button" onClick={signInWithGoogle}>
+          <Image
+            height="24px"
+            width="24px"
+            mr={2}
+            src={googleImage.src}
+          ></Image>
+          Sign in with Google
+        </Button>
+      </Flex>
       <Button type="button" onClick={logout}>
         Logout
       </Button>
-      <Button type="button" onClick={signInWithGoogle}>
-        Google
-      </Button>
+      <Text>{user ? user.email : "no user logged in"}</Text>
     </Box>
   );
 };

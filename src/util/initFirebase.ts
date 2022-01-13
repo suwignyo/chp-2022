@@ -6,6 +6,8 @@ import {
   addDoc,
   updateDoc,
   collection,
+  getDoc,
+  getDocs,
 } from "firebase/firestore";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 // import { getAnalytics } from "firebase/analytics";
@@ -24,8 +26,7 @@ const app = initializeApp(firebaseConfig);
 
 export const auth = getAuth(app);
 
-// export const db = getFirestore(app);
-export { getFirestore, setDoc, addDoc, updateDoc, collection };
+export const db = getFirestore(app);
 // to be deleted
 // const test = doc(firestore, "guests/test1");
 

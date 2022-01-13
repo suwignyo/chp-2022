@@ -1,21 +1,32 @@
 import { useEffect, useState } from "react";
-import { Box, Button, Input, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Input,
+  Text,
+  Flex,
+  Heading,
+  FormControl,
+  FormLabel,
+} from "@chakra-ui/react";
 import { Hero } from "../../components/Hero";
 import { Container } from "../../components/Container";
 import { Main } from "../../components/Main";
 import { useForm } from "react-hook-form";
-// import { db } from "../../util/initFirebase";
-
-import { collection, getDocs, addDoc } from "@firebase/firestore";
+import { db } from "../../util/initFirebase";
+import { addDoc, collection, getDocs } from "firebase/firestore";
+import { useAuth } from "../../util/useAuth";
 
 type FormInputs = {
   firstName: string;
   lastName: string;
   phoneNumber: number;
-  email: string;
 };
 
 const SaveTheDate = () => {
+  const { user, loading, logout } = useAuth();
+  console.log("user.email", user.email);
   const [guests, setGuests] = useState([]);
   const guestCollection = collection(db, "guests");
 
@@ -24,13 +35,6 @@ const SaveTheDate = () => {
     console.log("data", data);
     setGuests(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
   };
-
-  // const createGuests = async (formValues) => {
-  //   // const data = await getDocs(guestCollection);
-  //   // console.log("data", data);
-  //   // setGuests(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-  //   await addDoc(guestCollection, {})
-  // };
 
   const { register, handleSubmit } = useForm<FormInputs>({
     shouldUseNativeValidation: true,
@@ -41,7 +45,7 @@ const SaveTheDate = () => {
       firstName: data.firstName,
       lastName: data.lastName,
       phoneNumber: data.phoneNumber,
-      email: data.email,
+      email: user.email,
       subscribedAt: new Date(),
     });
     console.log(data);
@@ -52,36 +56,68 @@ const SaveTheDate = () => {
   }, []);
   console.log("guests", guests);
 
+  if (loading || !user) return <CircularProgress />;
   return (
-    <Container height="100vh">
-      <Text>Save the date</Text>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Input
-          {...register("firstName", {
-            required: "Please enter your first name.",
-          })} // custom message
-          placeholder="first name"
-        />
-        <Input
-          {...register("lastName", {
-            required: "Please enter your first name.",
-          })} // custom message
-          placeholder="last name"
-        />
-        <Input
-          {...register("email", {
-            required: "Please enter your first name.",
-          })} // custom message
-          placeholder="email"
-        />
-        <Input
-          {...register("phoneNumber", {
-            required: "Please enter your first name.",
-          })} // custom message
-          placeholder="phone number"
-        />
-        <Button type="submit">Submit</Button>
-      </form>
+    <Container>
+      <Flex
+        flex={1}
+        alignItems="center"
+        justifyContent="center"
+        height="100vh"
+        flexDirection="column"
+      >
+        <Flex
+          alignItems="center"
+          justifyContent="center"
+          minHeight="50%"
+          width="50%"
+          maxWidth={600}
+          background="white"
+          borderRadius={"5px"}
+          margin="auto"
+        >
+          <Box p={6} flex={1}>
+            <Heading mb={4} textAlign={"center"}>
+              Save The Date
+            </Heading>
+            <FormControl isInvalid={false}>
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <FormLabel mt={4} htmlFor="firstName">
+                  First Name
+                </FormLabel>
+                <Input
+                  {...register("firstName", {
+                    required: "Please enter your first name.",
+                  })} // custom message
+                  placeholder="first name"
+                />
+                <FormLabel mt={4} htmlFor="lastName">
+                  Last Name
+                </FormLabel>
+                <Input
+                  {...register("lastName", {
+                    required: "Please enter your first name.",
+                  })} // custom message
+                  placeholder="last name"
+                />
+
+                <FormLabel mt={4} htmlFor="phoneNumber">
+                  Phone Number
+                </FormLabel>
+                <Input
+                  {...register("phoneNumber", {
+                    required: "Please enter your first name.",
+                  })} // custom message
+                  placeholder="phone number"
+                />
+                <Button textAlign="right" mt={4} type="submit">
+                  Submit
+                </Button>
+              </form>
+            </FormControl>
+          </Box>
+        </Flex>
+      </Flex>
       {guests.map((guest) => {
         return (
           <Box key={guest.id}>
@@ -93,6 +129,7 @@ const SaveTheDate = () => {
           </Box>
         );
       })}
+      <Button onClick={logout}>Logout</Button>
     </Container>
   );
 };

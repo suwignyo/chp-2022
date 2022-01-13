@@ -10,6 +10,7 @@ import "firebase/auth";
 import { auth } from "./initFirebase";
 // import { removeTokenCookie, setTokenCookie } from "./tokenCookies";
 import { onAuthStateChanged, signOut, User } from "firebase/auth";
+// import Cookies from "js-cookie";
 
 // initialize firebase
 
@@ -17,16 +18,23 @@ interface IAuthContext {
   user: User | null;
   logout: () => void;
   authenticated: boolean;
+  loading: boolean;
 }
 
 const AuthContext = createContext<IAuthContext>({
   user: null,
   logout: () => null,
   authenticated: false,
+  loading: false,
 });
 
 export const AuthProvider: FunctionComponent = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
+
+  const [unknown, setUnknown] = useState<boolean>(false);
+
+  console.log("user", user);
+
   const router = useRouter();
 
   const logout = async () => {
@@ -62,14 +70,23 @@ export const AuthProvider: FunctionComponent = ({ children }) => {
   // }, []);
 
   useEffect(() => {
-    onAuthStateChanged(auth, (currentUser) => {
-      console.log("currentUser", currentUser);
-      setUser(currentUser);
+    const authListener = onAuthStateChanged(auth, (currentUser) => {
+      if (currentUser) {
+        setUser(currentUser);
+        setUnknown(false);
+      } else {
+        setUser(null);
+        setUnknown(false);
+        router.push("/");
+      }
     });
+    return authListener();
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, logout, authenticated: !!user }}>
+    <AuthContext.Provider
+      value={{ user, logout, authenticated: !!user, loading: unknown }}
+    >
       {children}
     </AuthContext.Provider>
   );

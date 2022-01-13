@@ -50,10 +50,9 @@ const Index = () => (
         <Flex
           alignItems="center"
           justifyContent="center"
-          height="50%"
+          minHeight="50%"
           width="50%"
           maxWidth={600}
-          minHeight={350}
           background="white"
           borderRadius={"5px"}
           margin="auto"
