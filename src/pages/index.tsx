@@ -4,6 +4,8 @@ import {
   Flex,
   Heading,
   keyframes,
+  Grid,
+  GridItem,
 } from "@chakra-ui/react";
 import { CheckCircleIcon, LinkIcon } from "@chakra-ui/icons";
 
@@ -20,47 +22,57 @@ import image from "../images/003.jpg";
 
 const Index = () => (
   <>
-    <Box
+    {/* <Box
       position="absolute"
       height="100%"
       width="100%"
       background="linear-gradient(180deg,transparent 0,transparent 5%,rgba(0,0,0,.4))"
       boxShadow="inset 2000px 0 0 0 rgba(0, 0, 0, 0.5)"
-    ></Box>
-    <Box
-      backgroundImage={image.src}
-      backgroundPosition="center"
-      height="100vh"
-      opacity={0.8}
-      backgroundSize="cover"
-      backgroundRepeat="no-repeat"
-      overflowY="scroll"
-      backgroundAttachment="fixed"
-      width="100%"
-      position="fixed"
-    >
-      <Main />
-      <Flex
-        flex={1}
-        alignItems="center"
-        justifyContent="center"
-        height="100vh"
-        flexDirection="column"
-      >
-        <Flex
-          alignItems="center"
-          justifyContent="center"
-          minHeight="50%"
-          width="50%"
-          maxWidth={600}
-          background="white"
-          borderRadius={"5px"}
-          margin="auto"
+    ></Box> */}
+    <Grid templateColumns="3fr 2fr" gap={0}>
+      <GridItem>
+        <Box
+          backgroundImage={image.src}
+          backgroundPosition="center"
+          height="100vh"
+          opacity={0.8}
+          backgroundSize="cover"
+          backgroundRepeat="no-repeat"
+          overflowY="scroll"
+          width="60%"
+          backgroundAttachment="fixed"
+          position="fixed"
         >
-          <Login></Login>
+          <Main />
+          <Flex
+            flex={1}
+            alignItems="center"
+            justifyContent="center"
+            height="100vh"
+            flexDirection="column"
+          >
+            <Flex
+              alignItems="center"
+              justifyContent="center"
+              minHeight="50%"
+              width="50%"
+              maxWidth={600}
+              background="white"
+              borderRadius={"5px"}
+              margin="auto"
+            >
+              <Login></Login>
+            </Flex>
+          </Flex>
+        </Box>
+      </GridItem>
+      <GridItem>
+        <Flex flex="1" width="40%" height="100%" bg="cream">
+          Hello
         </Flex>
-      </Flex>
-    </Box>
+      </GridItem>
+    </Grid>
+
     <DarkModeSwitch />
   </>
 );

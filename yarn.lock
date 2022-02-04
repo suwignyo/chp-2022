@@ -1158,6 +1158,16 @@
   resolved "https://registry.yarnpkg.com/@firebase/webchannel-wrapper/-/webchannel-wrapper-0.6.1.tgz#0c74724ba6e9ea6ad25a391eab60a79eaba4c556"
   integrity sha512-9FqhNjKQWpQ3fGnSOCovHOm+yhhiorKEqYLAfd525jWavunDJcx8rOW6i6ozAh+FbwcYMkL7b+3j4UR/30MpoQ==
 
+"@fontsource/merriweather@^4.5.4":
+  version "4.5.4"
+  resolved "https://registry.yarnpkg.com/@fontsource/merriweather/-/merriweather-4.5.4.tgz#d3768028349d040e1e31d29b245d9dbc211824b0"
+  integrity sha512-nHGjhafMqDS9cO7EdPU46+T7TcwuJeAYlTZYlmHP1oId+sKcoWF+5JQDer2xA2n1Z5LWRdqz5lAs1OAzDe2qxQ==
+
+"@fontsource/raleway@^4.5.1":
+  version "4.5.1"
+  resolved "https://registry.yarnpkg.com/@fontsource/raleway/-/raleway-4.5.1.tgz#905b751c6d0ae20abc604c13bf7c6b02a3e98784"
+  integrity sha512-/zzyvXSwpAr2PKdoXL+4CLL5x8YKDoeeaeXambhO52EssYPSFBtScLZzd8vW87Fw0RMMveYjRQM/4LhpC71vSA==
+
 "@fontsource/the-nautigal@^4.5.0":
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/@fontsource/the-nautigal/-/the-nautigal-4.5.0.tgz#6acd9a15eeb377a4176d46ffa3aa2b3700739269"
