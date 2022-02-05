@@ -17,6 +17,7 @@ import { CTA } from "../components/CTA";
 import { Footer } from "../components/Footer";
 import { Login } from "../components/Login";
 import { Layout } from "../components/Layout";
+import { Invitation } from "../components/Invitation";
 import { NavBar } from "../components/NavBar";
 import image from "../images/003.jpg";
 
@@ -29,7 +30,7 @@ const Index = () => (
       background="linear-gradient(180deg,transparent 0,transparent 5%,rgba(0,0,0,.4))"
       boxShadow="inset 2000px 0 0 0 rgba(0, 0, 0, 0.5)"
     ></Box> */}
-    <Grid templateColumns="3fr 2fr" gap={0}>
+    <Grid templateColumns="3fr 2fr" gap={0} height="100vh">
       <GridItem>
         <Box
           backgroundImage={image.src}
@@ -40,11 +41,10 @@ const Index = () => (
           backgroundRepeat="no-repeat"
           overflowY="scroll"
           width="60%"
-          backgroundAttachment="fixed"
           position="fixed"
         >
-          <Main />
-          <Flex
+          {/* <Main /> */}
+          {/* <Flex
             flex={1}
             alignItems="center"
             justifyContent="center"
@@ -63,13 +63,11 @@ const Index = () => (
             >
               <Login></Login>
             </Flex>
-          </Flex>
+          </Flex> */}
         </Box>
       </GridItem>
       <GridItem>
-        <Flex flex="1" width="40%" height="100%" bg="cream">
-          Hello
-        </Flex>
+        <Invitation />
       </GridItem>
     </Grid>
 
