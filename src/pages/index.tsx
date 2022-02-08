@@ -36,7 +36,7 @@ const Index = () => (
           backgroundImage={image.src}
           backgroundPosition="center"
           height="100vh"
-          opacity={0.8}
+          // opacity={0.8}
           backgroundSize="cover"
           backgroundRepeat="no-repeat"
           overflowY="scroll"

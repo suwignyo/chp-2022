@@ -2,8 +2,8 @@ import { extendTheme } from "@chakra-ui/react";
 import { createBreakpoints } from "@chakra-ui/theme-tools";
 import "@fontsource/the-nautigal";
 
-const fonts = { body: "Raleway", heading: "Merriweather" };
-
+const fonts = { body: "Raleway", heading: "Alice" };
+// other fonts available: Merriweather
 const breakpoints = createBreakpoints({
   sm: "40em",
   md: "52em",

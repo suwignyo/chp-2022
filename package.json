@@ -11,6 +11,7 @@
     "@chakra-ui/theme-tools": "1.1.2",
     "@emotion/react": "11.1.5",
     "@emotion/styled": "11.1.5",
+    "@fontsource/alice": "^4.5.2",
     "@fontsource/merriweather": "^4.5.4",
     "@fontsource/raleway": "^4.5.1",
     "@fontsource/the-nautigal": "^4.5.0",

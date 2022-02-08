@@ -1158,6 +1158,11 @@
   resolved "https://registry.yarnpkg.com/@firebase/webchannel-wrapper/-/webchannel-wrapper-0.6.1.tgz#0c74724ba6e9ea6ad25a391eab60a79eaba4c556"
   integrity sha512-9FqhNjKQWpQ3fGnSOCovHOm+yhhiorKEqYLAfd525jWavunDJcx8rOW6i6ozAh+FbwcYMkL7b+3j4UR/30MpoQ==
 
+"@fontsource/alice@^4.5.2":
+  version "4.5.2"
+  resolved "https://registry.yarnpkg.com/@fontsource/alice/-/alice-4.5.2.tgz#8efd6222dceeb1b1a287a8b61ee8942c4355915e"
+  integrity sha512-umSvFBaUfa1NDlgDd8v2VgTW7ROtcD3DkTrCrSKuItYzSknXMmUdnc/GTgUVXTXl1uwrqwnIT/ZhYk/YD7N1Fw==
+
 "@fontsource/merriweather@^4.5.4":
   version "4.5.4"
   resolved "https://registry.yarnpkg.com/@fontsource/merriweather/-/merriweather-4.5.4.tgz#d3768028349d040e1e31d29b245d9dbc211824b0"

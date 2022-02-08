@@ -20,7 +20,7 @@ export const NavBar = ({ children }: FlexProps) => (
     <Box
       backgroundImage={image.src}
       backgroundPosition="center"
-      opacity={0.8}
+      // opacity={0.8}
       // position="absolute"
       backgroundSize="cover"
       backgroundRepeat="no-repeat"

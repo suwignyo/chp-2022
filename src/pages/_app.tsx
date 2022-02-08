@@ -2,6 +2,8 @@ import "@fontsource/raleway/400.css";
 import "@fontsource/raleway/700.css";
 import "@fontsource/merriweather/400.css";
 import "@fontsource/merriweather/700.css";
+import "@fontsource/alice/400.css";
+
 import { ChakraProvider } from "@chakra-ui/react";
 
 import theme from "../theme";

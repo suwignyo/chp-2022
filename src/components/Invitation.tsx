@@ -24,7 +24,7 @@ const renderer = ({
     return <Text>ITS TODAY!</Text>;
   } else {
     return (
-      <Text color="white" fontSize="20px">
+      <Text color="burgundy" fontSize="16px">
         {days} DAYS {hours} HOURS {minutes} MIN {seconds} sec
       </Text>
     );
@@ -68,10 +68,19 @@ export const Invitation = () => {
         alignItems="center"
         flexDirection="column"
       >
-        <Heading display="block" color="white">
+        <Heading display="block" color="burgundy">
           Gerry &amp; Michelle
         </Heading>
-        <Text display="block" color="white" fontSize="20px">
+        <Heading display="block" color="burgundy">
+          Country Heritage Park
+        </Heading>
+        <Text display="block" color="burgundy" fontSize="20px">
+          Gambrel Barn
+        </Text>
+        <Text display="block" color="burgundy" fontSize="20px">
+          Milton, ON, Canada
+        </Text>
+        <Text display="block" color="burgundy" fontSize="20px">
           October, 15 &amp; 16 2022
         </Text>
         <Countdown date={weddingDate} renderer={renderer} autoStart={true} />

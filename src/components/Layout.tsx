@@ -8,7 +8,7 @@ export const Layout = ({ children }: BoxProps) => (
       backgroundPosition="center"
       height="100vh"
       width="20vw"
-      opacity={0.8}
+      // opacity={0.8}
       // position="absolute"
       backgroundSize="cover"
       backgroundRepeat="no-repeat"
@@ -20,7 +20,7 @@ export const Layout = ({ children }: BoxProps) => (
       backgroundPosition="center"
       height="100vh"
       width="20vw"
-      opacity={0.8}
+      // opacity={0.8}
       // position="absolute"
       backgroundSize="cover"
       backgroundRepeat="no-repeat"
