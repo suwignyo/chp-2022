@@ -26,7 +26,6 @@ type FormInputs = {
 
 const SaveTheDate = () => {
   const { user, loading, logout } = useAuth();
-  console.log("user.email", user.email);
   const [guests, setGuests] = useState([]);
   const guestCollection = collection(db, "guests");
 
