@@ -68,10 +68,16 @@ export const Invitation = () => {
         alignItems="center"
         flexDirection="column"
       >
-        <Heading display="block" color="burgundy">
+        <Heading textAlign="center" display="block" color="burgundy" size="2xl">
           Gerry &amp; Michelle
         </Heading>
-        <Heading display="block" color="burgundy">
+        <Heading
+          textAlign="center"
+          mt="4"
+          display="block"
+          color="burgundy"
+          size="xl"
+        >
           Country Heritage Park
         </Heading>
         <Text display="block" color="burgundy" fontSize="20px">

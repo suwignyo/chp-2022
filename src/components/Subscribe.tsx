@@ -3,19 +3,16 @@ import {
   Box,
   Button,
   Text,
-  Heading,
   Flex,
   FormErrorMessage,
   FormControl,
-  FormLabel,
-  Image,
+  useToast,
 } from "@chakra-ui/react";
-import { useRouter } from "next/router";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import googleImage from "../images/google.png";
 import { supabase } from "../util/supabaseClient";
 
+const ACCESS_CODE = "testcode";
 type FormInputs = {
   email: string;
   firstName: string;
@@ -41,12 +38,11 @@ export const Subscribe = (props) => {
     shouldUseNativeValidation: true,
     defaultValues: initialValues,
   });
-  console.log("errors", errors);
-  // const [authError, setAuthError] = useState<string | null>(null)
+
   const [guestName, setGuestName] = useState<string | null>(null);
   const onSubmit = async (formData: FormInputs) => {
-    if (formData.accessCode === process.env.GM_ACCESS_CODE) {
-      const { data: guest, error } = await supabase.from("guest").insert([
+    if (formData.accessCode === ACCESS_CODE) {
+      const { data: guest, error } = await supabase.from("guests").insert([
         {
           firstName: formData.firstName,
           lastName: formData.lastName,
@@ -54,6 +50,7 @@ export const Subscribe = (props) => {
         },
       ]);
       setGuestName(`${guest[0].firstName} ${guest[0].lastName}`);
+      sendMail(formData);
       console.log("data,error", guest, error);
     } else {
       setError("accessCode", {
@@ -63,6 +60,8 @@ export const Subscribe = (props) => {
     }
   };
 
+  const toast = useToast();
+
   const Subscribed = () => (
     <Text color="white">
       You are subscribed! Hope to see you at the wedding!
@@ -71,6 +70,30 @@ export const Subscribe = (props) => {
   console.log("errors", errors);
 
   const formInvalid = Object.keys(errors).length > 0;
+
+  const sendMail = async (data) => {
+    try {
+      await fetch("/api/subscribe", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      //if sucess do whatever you like, i.e toast notification
+      setTimeout(() => {
+        reset();
+        toast({
+          title: "Sent!",
+          description: "We've sent a message to your email.",
+          status: "success",
+          duration: 9000,
+          isClosable: true,
+        });
+      }, 2000);
+    } catch (error) {
+      // toast error message. whatever you wish
+    }
+  };
   return (
     <Box padding={6} maxWidth="400px">
       <Box py="12">
