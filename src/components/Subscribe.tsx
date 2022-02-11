@@ -8,9 +8,11 @@ import {
   FormControl,
   useToast,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useCallback, useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { supabase } from "../util/supabaseClient";
+
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 
 const ACCESS_CODE = "testcode";
 type FormInputs = {
@@ -28,6 +30,8 @@ const initialValues = {
 };
 
 export const Subscribe = (props) => {
+  const { executeRecaptcha } = useGoogleReCaptcha();
+
   const {
     register,
     handleSubmit,
@@ -39,10 +43,26 @@ export const Subscribe = (props) => {
     defaultValues: initialValues,
   });
 
+  const handleReCaptchaVerify = useCallback(async () => {
+    console.log("executeRecaptcha", executeRecaptcha);
+    if (!executeRecaptcha) {
+      console.log("Execute recaptcha not yet available");
+      return;
+    }
+
+    const token = await executeRecaptcha("yourAction");
+    console.log("token", token);
+  }, []);
+
+  useEffect(() => {
+    handleReCaptchaVerify();
+  }, [handleReCaptchaVerify]);
+
   const [guestName, setGuestName] = useState<string | null>(null);
   const onSubmit = async (formData: FormInputs) => {
+    handleReCaptchaVerify();
     if (formData.accessCode === ACCESS_CODE) {
-      const { data: guest, error } = await supabase.from("guests").insert([
+      const { data: guest, error } = await supabase.from("guest").insert([
         {
           firstName: formData.firstName,
           lastName: formData.lastName,
@@ -169,7 +189,7 @@ export const Subscribe = (props) => {
                     disabled={isSubmitting}
                     borderRadius="0"
                   >
-                    Subscribe
+                    Save the Date!
                   </Button>
                 </Flex>
               </form>
