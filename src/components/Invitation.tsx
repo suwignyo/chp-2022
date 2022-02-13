@@ -5,12 +5,14 @@ import {
   Text,
   keyframes,
   Box,
-  Button,
+  Image,
 } from "@chakra-ui/react";
 import { GetServerSideProps } from "next";
 import Countdown, { CountdownTimeDelta } from "react-countdown";
 import { supabase } from "../util/supabaseClient";
 import { Subscribe } from "./Subscribe";
+
+import barnImage from "../images/barn.png";
 
 const renderer = ({
   hours,
@@ -76,17 +78,20 @@ export const Invitation = () => {
           mt="4"
           display="block"
           color="burgundy"
-          size="xl"
+          size="lg"
+          my="24px"
         >
           Country Heritage Park
         </Heading>
+        <Image height="48px" width="48px" src={barnImage.src}></Image>
+
         <Text display="block" color="burgundy" fontSize="20px">
           Gambrel Barn
         </Text>
         <Text display="block" color="burgundy" fontSize="20px">
           Milton, ON, Canada
         </Text>
-        <Text display="block" color="burgundy" fontSize="20px">
+        <Text display="block" color="burgundy" fontSize="20px" mb="24px">
           October, 15 &amp; 16 2022
         </Text>
         <Countdown date={weddingDate} renderer={renderer} autoStart={true} />
@@ -128,10 +133,6 @@ export const Invitation = () => {
         width="100%"
         bg="burgundy"
       >
-        {/* <Box border="1px solid #fff" width="50%">
-          <Text color="white">Hello</Text>
-        </Box> */}
-        {/* <Button onClick={handleOnClick}>add</Button> */}
         <Subscribe />
       </Flex>
     </>

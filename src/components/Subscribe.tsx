@@ -8,11 +8,10 @@ import {
   FormControl,
   useToast,
 } from "@chakra-ui/react";
-import { useCallback, useState, useEffect } from "react";
+import { useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { supabase } from "../util/supabaseClient";
-
-import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
+import ReCAPTCHA from "react-google-recaptcha";
 
 const ACCESS_CODE = "testcode";
 type FormInputs = {
@@ -30,8 +29,8 @@ const initialValues = {
 };
 
 export const Subscribe = (props) => {
-  const { executeRecaptcha } = useGoogleReCaptcha();
-
+  const [recaptchaToken, setRecaptchaToken] = useState<string>();
+  const [verified, setVerified] = useState<boolean>(false);
   const {
     register,
     handleSubmit,
@@ -42,42 +41,28 @@ export const Subscribe = (props) => {
     shouldUseNativeValidation: true,
     defaultValues: initialValues,
   });
-
-  const handleReCaptchaVerify = useCallback(async () => {
-    console.log("executeRecaptcha", executeRecaptcha);
-    if (!executeRecaptcha) {
-      console.log("Execute recaptcha not yet available");
-      return;
-    }
-
-    const token = await executeRecaptcha("yourAction");
-    console.log("token", token);
-  }, []);
-
-  useEffect(() => {
-    handleReCaptchaVerify();
-  }, [handleReCaptchaVerify]);
+  const reRef = useRef<ReCAPTCHA>();
 
   const [guestName, setGuestName] = useState<string | null>(null);
   const onSubmit = async (formData: FormInputs) => {
-    handleReCaptchaVerify();
-    if (formData.accessCode === ACCESS_CODE) {
-      const { data: guest, error } = await supabase.from("guest").insert([
-        {
-          firstName: formData.firstName,
-          lastName: formData.lastName,
-          email: formData.email,
-        },
-      ]);
-      setGuestName(`${guest[0].firstName} ${guest[0].lastName}`);
-      sendMail(formData);
-      console.log("data,error", guest, error);
-    } else {
-      setError("accessCode", {
-        message:
-          "Invalid access code, please email gerrchelle.2022@gmail.com for more information",
-      });
-    }
+    const token = await reRef.current.executeAsync();
+    reRef.current.reset();
+    const { data: guest, error } = await supabase.from("guest").insert([
+      {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+      },
+    ]);
+    setGuestName(`${guest[0].firstName} ${guest[0].lastName}`);
+    sendMail({ ...formData, token: token });
+    // }
+    // } else {
+    //   setError("firstName", {
+    //     message:
+    //       "Invalid token, please email gerrchelle.2022@gmail.com for more information",
+    //   });
+    // }
   };
 
   const toast = useToast();
@@ -87,7 +72,6 @@ export const Subscribe = (props) => {
       You are subscribed! Hope to see you at the wedding!
     </Text>
   );
-  console.log("errors", errors);
 
   const formInvalid = Object.keys(errors).length > 0;
 
@@ -99,7 +83,7 @@ export const Subscribe = (props) => {
         body: JSON.stringify(data),
       });
 
-      //if sucess do whatever you like, i.e toast notification
+      // toast notification
       setTimeout(() => {
         reset();
         toast({
@@ -111,11 +95,17 @@ export const Subscribe = (props) => {
         });
       }, 2000);
     } catch (error) {
-      // toast error message. whatever you wish
+      // toast error message
     }
   };
+
   return (
     <Box padding={6} maxWidth="400px">
+      <ReCAPTCHA
+        sitekey={process.env.NEXT_PUBLIC_GOOGLE_RECAPTCHA_API_KEY}
+        size="invisible"
+        ref={reRef}
+      />
       <Box py="12">
         {guestName ? (
           <Subscribed />
@@ -126,9 +116,6 @@ export const Subscribe = (props) => {
             </Text>
             <FormControl isInvalid={formInvalid}>
               <form onSubmit={handleSubmit(onSubmit)}>
-                {/* <FormLabel mt={4} htmlFor="email" color="white">
-                Email
-              </FormLabel> */}
                 <Input
                   {...register("email", {
                     required: "Email is required",
@@ -139,9 +126,6 @@ export const Subscribe = (props) => {
                   color="white"
                   borderRadius="0"
                 />
-                {/* <FormLabel mt={4} htmlFor="password" color="white">
-                Name
-              </FormLabel> */}
                 <Flex>
                   <Input
                     {...register("firstName", {
