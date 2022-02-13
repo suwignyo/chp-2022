@@ -33,8 +33,6 @@ export const AuthProvider: FunctionComponent = ({ children }) => {
 
   const [unknown, setUnknown] = useState<boolean>(false);
 
-  console.log("user", user);
-
   const router = useRouter();
 
   const logout = async () => {

@@ -34,7 +34,6 @@ const renderer = ({
 };
 
 export const Invitation = () => {
-  // console.log("props", props);
   const arrow = keyframes`
   0% {opacity: 1;}
   100% {opacity: 0; transform: translate(-10px, -10px);}
@@ -45,21 +44,14 @@ export const Invitation = () => {
     return { guest, error };
   };
 
-  console.log(
-    "guest",
-    guest().then((data) => console.log(data))
-  );
+  // console.log(
+  //   "guest",
+  //   guest().then((data) => console.log(data))
+  // );
   const scrollAnimation = `${arrow} infinite 1s`;
 
   const weddingDate = new Date(2022, 10, 15);
 
-  const handleOnClick = async () => {
-    const { data, error } = await supabase
-      .from("guest")
-      .insert([{ name: "The Shire", email: "test@mail.com" }]);
-
-    console.log("data,error", data, error);
-  };
   return (
     <>
       <Flex
@@ -129,7 +121,6 @@ export const Invitation = () => {
       <Flex
         alignItems="center"
         justifyContent="center"
-        // height="300px"
         width="100%"
         bg="burgundy"
       >

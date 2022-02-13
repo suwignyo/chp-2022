@@ -49,6 +49,7 @@ export const Subscribe = (props) => {
   const onSubmit = async (formData: FormInputs) => {
     const token = await reRef.current.executeAsync();
     reRef.current.reset();
+
     const { data: guest, error } = await supabase.from("guest").insert([
       {
         firstName: formData.firstName,
@@ -57,15 +58,15 @@ export const Subscribe = (props) => {
         phoneNumber: formData.phoneNumber,
       },
     ]);
+    if (error) {
+      return setError("firstName", {
+        message:
+          "There was an issue submitting your information, please try a different email address or phone number",
+        // "Invalid token, please email gerrchelle.2022@gmail.com for more information",
+      });
+    }
     setGuestName(`${guest[0].firstName} ${guest[0].lastName}`);
     sendMail({ ...formData, token: token });
-    // }
-    // } else {
-    //   setError("firstName", {
-    //     message:
-    //       "Invalid token, please email gerrchelle.2022@gmail.com for more information",
-    //   });
-    // }
   };
 
   const toast = useToast();
@@ -173,7 +174,7 @@ export const Subscribe = (props) => {
                 </Grid>
 
                 <FormErrorMessage>
-                  {errors?.phoneNumber?.message}
+                  {errors?.firstName?.message}
                 </FormErrorMessage>
                 <FormErrorMessage>{errors?.email?.message}</FormErrorMessage>
                 <Flex justifyContent="center">
