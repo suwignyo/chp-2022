@@ -5,7 +5,7 @@ import "@fontsource/the-nautigal";
 const fonts = { body: "Raleway", heading: "Alice" };
 // other fonts available: Merriweather
 const breakpoints = createBreakpoints({
-  sm: "40em",
+  sm: "52em",
   md: "52em",
   lg: "64em",
   xl: "80em",

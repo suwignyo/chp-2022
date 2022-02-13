@@ -56,11 +56,12 @@ export const Invitation = () => {
     <>
       <Flex
         flex="1"
-        height="100vh"
+        height={["auto", "100vh"]}
         bg="cream"
         justifyContent="center"
         alignItems="center"
         flexDirection="column"
+        py="12"
       >
         <Heading textAlign="center" display="block" color="burgundy" size="2xl">
           Gerry &amp; Michelle
@@ -87,11 +88,11 @@ export const Invitation = () => {
           October, 15 &amp; 16 2022
         </Text>
         <Countdown date={weddingDate} renderer={renderer} autoStart={true} />
-        <Box position="absolute" bottom={20}>
+        <Box display={["none", "block"]} position="absolute" bottom={20}>
           <Box
             width="40px"
             height="40px"
-            top="50%"
+            top="20%"
             margin="-20px 0 0 -20px"
             transform="rotate(45deg)"
             borderLeft="none"

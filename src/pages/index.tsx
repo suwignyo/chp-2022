@@ -6,6 +6,7 @@ import {
   keyframes,
   Grid,
   GridItem,
+  Image,
 } from "@chakra-ui/react";
 import { CheckCircleIcon, LinkIcon } from "@chakra-ui/icons";
 
@@ -30,21 +31,30 @@ const Index = () => (
       background="linear-gradient(180deg,transparent 0,transparent 5%,rgba(0,0,0,.4))"
       boxShadow="inset 2000px 0 0 0 rgba(0, 0, 0, 0.5)"
     ></Box> */}
-    <Grid templateColumns="3fr 2fr" gap={0} height="100vh">
+    <Grid templateColumns={["1fr", "3fr 2fr"]} gap={0} height="100vh">
       <GridItem>
-        <Box
+        <Image
+          src={image.src}
+          alt="gm2022"
+          objectFit="cover"
+          height={["50vh", "100vh"]}
+          width={["100%", "60%"]}
+          position={["relative", "fixed"]}
+        ></Image>
+
+        {/* <Box
           backgroundImage={image.src}
           backgroundPosition="center"
-          height="100vh"
+          height={["50%", "100vh"]}
           // opacity={0.8}
           backgroundSize="cover"
           backgroundRepeat="no-repeat"
           overflowY="scroll"
-          width="60%"
+          width={["100%", "60%"]}
           position="fixed"
-        >
-          {/* <Main /> */}
-          {/* <Flex
+        > */}
+        {/* <Main /> */}
+        {/* <Flex
             flex={1}
             alignItems="center"
             justifyContent="center"
@@ -64,7 +74,7 @@ const Index = () => (
               <Login></Login>
             </Flex>
           </Flex> */}
-        </Box>
+        {/* </Box> */}
       </GridItem>
       <GridItem>
         <Invitation />
