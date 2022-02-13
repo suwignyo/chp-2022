@@ -7,30 +7,31 @@ import {
   FormErrorMessage,
   FormControl,
   useToast,
+  InputGroup,
+  InputRightElement,
+  Grid,
 } from "@chakra-ui/react";
 import { useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { supabase } from "../util/supabaseClient";
 import ReCAPTCHA from "react-google-recaptcha";
+import { EmailIcon, PhoneIcon } from "@chakra-ui/icons";
 
-const ACCESS_CODE = "testcode";
 type FormInputs = {
   email: string;
   firstName: string;
   lastName: string;
-  accessCode: string;
+  phoneNumber: string;
 };
 
 const initialValues = {
   firstName: "",
   lastName: "",
   email: "",
-  accessCode: "",
+  phoneNumber: "",
 };
 
 export const Subscribe = (props) => {
-  const [recaptchaToken, setRecaptchaToken] = useState<string>();
-  const [verified, setVerified] = useState<boolean>(false);
   const {
     register,
     handleSubmit,
@@ -44,6 +45,7 @@ export const Subscribe = (props) => {
   const reRef = useRef<ReCAPTCHA>();
 
   const [guestName, setGuestName] = useState<string | null>(null);
+  const [phoneNumber, setPhoneNumber] = useState<string | null>(null);
   const onSubmit = async (formData: FormInputs) => {
     const token = await reRef.current.executeAsync();
     reRef.current.reset();
@@ -52,6 +54,7 @@ export const Subscribe = (props) => {
         firstName: formData.firstName,
         lastName: formData.lastName,
         email: formData.email,
+        phoneNumber: formData.phoneNumber,
       },
     ]);
     setGuestName(`${guest[0].firstName} ${guest[0].lastName}`);
@@ -69,7 +72,7 @@ export const Subscribe = (props) => {
 
   const Subscribed = () => (
     <Text color="white">
-      You are subscribed! Hope to see you at the wedding!
+      Thank you for saving the date! We will send updates to your email!
     </Text>
   );
 
@@ -100,7 +103,7 @@ export const Subscribe = (props) => {
   };
 
   return (
-    <Box padding={6} maxWidth="400px">
+    <Box padding={6} maxWidth="500px">
       <ReCAPTCHA
         sitekey={process.env.NEXT_PUBLIC_GOOGLE_RECAPTCHA_API_KEY}
         size="invisible"
@@ -112,29 +115,49 @@ export const Subscribe = (props) => {
         ) : (
           <>
             <Text textAlign={"center"} color="white">
-              Enter your name and email to get updates on our wedding.
+              Please enter your information to get updates on our wedding.
             </Text>
             <FormControl isInvalid={formInvalid}>
               <form onSubmit={handleSubmit(onSubmit)}>
-                <Input
-                  {...register("email", {
-                    required: "Email is required",
-                  })} // custom message
-                  placeholder="Email"
-                  id="email"
-                  my="2"
-                  color="white"
-                  borderRadius="0"
-                />
-                <Flex>
+                <Grid templateColumns="1fr 1fr" gap={3} mt={3}>
+                  <InputGroup>
+                    <Input
+                      {...register("email", {
+                        required: "Email is required",
+                      })} // custom message
+                      placeholder="Email"
+                      id="email"
+                      color="white"
+                      borderRadius="0"
+                    />
+                    <InputRightElement
+                      pointerEvents="none"
+                      children={<EmailIcon color="gray.300" />}
+                    />
+                  </InputGroup>
+                  <InputGroup>
+                    <Input
+                      type="tel"
+                      placeholder="Phone number"
+                      {...register("phoneNumber", {
+                        required: "Please enter phone number",
+                      })} // custom message
+                      color="white"
+                      borderRadius="0"
+                    />
+                    <InputRightElement
+                      pointerEvents="none"
+                      children={<PhoneIcon color="gray.300" />}
+                    />
+                  </InputGroup>
+                </Grid>
+                <Grid mt={3} templateColumns="1fr 1fr" gap={3}>
                   <Input
                     {...register("firstName", {
                       required: "First name is required",
                     })} // custom message
                     placeholder="First name"
                     type="text"
-                    mr="2"
-                    my="2"
                     color="white"
                     borderRadius="0"
                   />
@@ -144,25 +167,13 @@ export const Subscribe = (props) => {
                     })} // custom message
                     placeholder="Last name"
                     type="text"
-                    ml="2"
-                    my="2"
                     color="white"
                     borderRadius="0"
                   />
-                </Flex>
-                <Input
-                  {...register("accessCode", {
-                    required: "Please enter access code",
-                  })} // custom message
-                  placeholder="Access Code"
-                  type="text"
-                  my="2"
-                  color="white"
-                  borderRadius="0"
-                />
+                </Grid>
 
                 <FormErrorMessage>
-                  {errors?.accessCode?.message}
+                  {errors?.phoneNumber?.message}
                 </FormErrorMessage>
                 <FormErrorMessage>{errors?.email?.message}</FormErrorMessage>
                 <Flex justifyContent="center">
