@@ -6,6 +6,7 @@ import {
   keyframes,
   Box,
   Image,
+  Divider,
 } from "@chakra-ui/react";
 import { GetServerSideProps } from "next";
 import Countdown, { CountdownTimeDelta } from "react-countdown";
@@ -88,28 +89,31 @@ export const Invitation = () => {
         >
           Country Heritage Park
         </Heading> */}
-        <Image mt="6" height="48px" width="48px" src={churchImage.src}></Image>
+        <Divider width="10" height="4px" my="4" bg="petal" />
+        <Image height="48px" width="48px" src={churchImage.src}></Image>
 
         <Text display="block" color="burgundy" fontSize="20px">
           St. Josephine Bakhita
         </Text>
-        <Text display="block" color="burgundy" fontSize="20px">
+        {/* <Text display="block" color="burgundy" fontSize="20px">
           Mississauga, ON, Canada
-        </Text>
-        <Text display="block" color="burgundy" fontSize="20px" mb="24px">
+        </Text> */}
+        <Text display="block" color="burgundy" fontSize="20px">
           October, 15 2022
         </Text>
+        <Divider width="10" height="4px" my="4" bg="petal" />
+
         <Image height="48px" width="48px" src={barnImage.src}></Image>
         <Text display="block" color="burgundy" fontSize="20px">
           Country Heritage Park
         </Text>
-        <Text display="block" color="burgundy" fontSize="20px">
+        {/* <Text display="block" color="burgundy" fontSize="20px">
           Gambrel Barn
-        </Text>
-        <Text display="block" color="burgundy" fontSize="20px">
+        </Text> */}
+        {/* <Text display="block" color="burgundy" fontSize="20px">
           Milton, ON, Canada
-        </Text>
-        <Text display="block" color="burgundy" fontSize="20px" mb="24px">
+        </Text> */}
+        <Text display="block" color="burgundy" fontSize="20px" mb="36px">
           October, 16 2022
         </Text>
         <Countdown date={weddingDate} renderer={renderer} autoStart={true} />
