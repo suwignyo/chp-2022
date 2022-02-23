@@ -114,7 +114,7 @@ export const Subscribe = (props) => {
         {guestName ? (
           <Subscribed />
         ) : (
-          <>
+          <Box data-aos="fade-up">
             <Text textAlign={"center"} color="white">
               Please enter your information to get updates on our wedding.
             </Text>
@@ -190,7 +190,7 @@ export const Subscribe = (props) => {
                 </Flex>
               </form>
             </FormControl>
-          </>
+          </Box>
         )}
       </Box>
     </Box>

@@ -10,7 +10,20 @@ import theme from "../theme";
 import { AppProps } from "next/app";
 import { AuthProvider } from "../util/useAuth";
 
+import AOS from "aos";
+
+import "aos/dist/aos.css";
+import { useEffect } from "react";
+
 function MyApp({ Component, pageProps }: AppProps) {
+  useEffect(() => {
+    AOS.init({
+      easing: "ease-out-cubic",
+      once: true,
+      duration: 1000,
+    });
+  }, []);
+
   return (
     <AuthProvider>
       <ChakraProvider resetCSS theme={theme}>
