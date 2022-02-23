@@ -13,6 +13,7 @@ import { supabase } from "../util/supabaseClient";
 import { Subscribe } from "./Subscribe";
 
 import barnImage from "../images/barn.png";
+import churchImage from "../images/church.png";
 
 const renderer = ({
   hours,
@@ -63,10 +64,21 @@ export const Invitation = () => {
         flexDirection="column"
         py="12"
       >
-        <Heading textAlign="center" display="block" color="burgundy" size="2xl">
+        <Heading
+          textAlign="center"
+          display="block"
+          color="burgundy"
+          size="2xl"
+          pl="6"
+        >
           Gerry &amp; Michelle
         </Heading>
-        <Heading
+        <button className="hamburger" type="button">
+          <span className="hamburger-box">
+            <span className="hamburger-inner"></span>
+          </span>
+        </button>
+        {/* <Heading
           textAlign="center"
           mt="4"
           display="block"
@@ -75,9 +87,22 @@ export const Invitation = () => {
           my="24px"
         >
           Country Heritage Park
-        </Heading>
-        <Image height="48px" width="48px" src={barnImage.src}></Image>
+        </Heading> */}
+        <Image mt="6" height="48px" width="48px" src={churchImage.src}></Image>
 
+        <Text display="block" color="burgundy" fontSize="20px">
+          St. Josephine Bakhita
+        </Text>
+        <Text display="block" color="burgundy" fontSize="20px">
+          Mississauga, ON, Canada
+        </Text>
+        <Text display="block" color="burgundy" fontSize="20px" mb="24px">
+          October, 15 2022
+        </Text>
+        <Image height="48px" width="48px" src={barnImage.src}></Image>
+        <Text display="block" color="burgundy" fontSize="20px">
+          Country Heritage Park
+        </Text>
         <Text display="block" color="burgundy" fontSize="20px">
           Gambrel Barn
         </Text>
@@ -85,10 +110,10 @@ export const Invitation = () => {
           Milton, ON, Canada
         </Text>
         <Text display="block" color="burgundy" fontSize="20px" mb="24px">
-          October, 15 &amp; 16 2022
+          October, 16 2022
         </Text>
         <Countdown date={weddingDate} renderer={renderer} autoStart={true} />
-        <Box display={["none", "block"]} position="absolute" bottom={20}>
+        <Box display={["none", "block"]} position="absolute" bottom={10}>
           <Box
             width="40px"
             height="40px"
