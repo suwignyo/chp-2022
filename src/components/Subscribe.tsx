@@ -121,6 +121,26 @@ export const Subscribe = (props) => {
             <FormControl isInvalid={formInvalid}>
               <form onSubmit={handleSubmit(onSubmit)}>
                 <Grid templateColumns="1fr 1fr" gap={3} mt={3}>
+                  <Input
+                    {...register("firstName", {
+                      required: "First name is required",
+                    })} // custom message
+                    placeholder="First name"
+                    type="text"
+                    color="white"
+                    borderRadius="0"
+                  />
+                  <Input
+                    {...register("lastName", {
+                      required: "Last name is required",
+                    })} // custom message
+                    placeholder="Last name"
+                    type="text"
+                    color="white"
+                    borderRadius="0"
+                  />
+                </Grid>
+                <Grid mt={3} templateColumns="1fr 1fr" gap={3}>
                   <InputGroup>
                     <Input
                       {...register("email", {
@@ -151,26 +171,6 @@ export const Subscribe = (props) => {
                       children={<PhoneIcon color="gray.300" />}
                     />
                   </InputGroup>
-                </Grid>
-                <Grid mt={3} templateColumns="1fr 1fr" gap={3}>
-                  <Input
-                    {...register("firstName", {
-                      required: "First name is required",
-                    })} // custom message
-                    placeholder="First name"
-                    type="text"
-                    color="white"
-                    borderRadius="0"
-                  />
-                  <Input
-                    {...register("lastName", {
-                      required: "Last name is required",
-                    })} // custom message
-                    placeholder="Last name"
-                    type="text"
-                    color="white"
-                    borderRadius="0"
-                  />
                 </Grid>
 
                 <FormErrorMessage>

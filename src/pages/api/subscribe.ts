@@ -7,10 +7,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { email, firstName, lastName, token } = req.body;
   const msg = {
     to: email,
-    from: "gerchelle.2022@gmail.com",
-    subject: "Thank you for subscribing",
-    name: `${firstName} ${lastName}`,
-    text: "Message body",
+    from: { name: "Gerry & Michelle", email: "gerchelle.2022@gmail.com" },
+    templateId: "d-be73e76e80c94bb0acf802c4dbcfe9dd",
+    personalizations: [
+      {
+        to: email,
+        dynamicTemplateData: { firstName: firstName, lastName: lastName },
+      },
+    ],
   };
 
   const human = await validateHuman(token);
