@@ -30,7 +30,6 @@ import theme from "../theme";
 
 const Index = () => {
   const [isOpen, setOpen] = useState(false);
-  console.log("isOpen", isOpen);
   return (
     <>
       {/* <Box
