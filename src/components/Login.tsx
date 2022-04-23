@@ -163,10 +163,10 @@ export const Login = (props) => {
           Sign in with Google
         </Button>
       </Flex>
-      <Button type="button" onClick={logout}>
+      {/* <Button type="button" onClick={logout}>
         Logout
       </Button>
-      <Text>{user ? user.email : "no user logged in"}</Text>
+      <Text>{user ? user.email : "no user logged in"}</Text> */}
     </Box>
   );
 };
