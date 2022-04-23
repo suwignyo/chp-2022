@@ -37,7 +37,7 @@ export const AuthProvider: FunctionComponent = ({ children }) => {
   const logout = async () => {
     await signOut(auth)
       .then(() => {
-        router.push("/");
+        router.push("/admin");
       })
       .catch((error) => {
         console.log("error signing out", error);
