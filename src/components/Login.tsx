@@ -69,7 +69,7 @@ export const Login = (props) => {
         data.email,
         data.password
       ).then(() => {
-        push("/save-the-date");
+        console.log("logged in");
       });
       console.log("user", user);
     } catch (error) {
@@ -92,7 +92,7 @@ export const Login = (props) => {
         data.email,
         data.password
       ).then(() => {
-        push("/save-the-date");
+        console.log("registered");
       });
       console.log("user", user);
     } catch (error) {

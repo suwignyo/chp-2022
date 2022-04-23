@@ -1,5 +1,6 @@
 import { Box } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import { NavBar } from "../../../components/NavBar";
 import { supabase } from "../../../util/supabaseClient";
 import Table from "./Table";
 
@@ -19,6 +20,7 @@ const Guest = (props) => {
 
   return (
     <Box padding={6} width="100%">
+      <NavBar />
       <Table data={guestData}></Table>
     </Box>
   );

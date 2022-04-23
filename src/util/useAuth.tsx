@@ -8,9 +8,8 @@ import {
 import { useRouter } from "next/router";
 import "firebase/auth";
 import { auth } from "./initFirebase";
-// import { removeTokenCookie, setTokenCookie } from "./tokenCookies";
-import { onAuthStateChanged, signOut, User } from "firebase/auth";
-// import Cookies from "js-cookie";
+import { removeTokenCookie, setTokenCookie } from "./tokenCookies";
+import { getAuth, onAuthStateChanged, signOut, User } from "firebase/auth";
 
 // initialize firebase
 
@@ -46,26 +45,24 @@ export const AuthProvider: FunctionComponent = ({ children }) => {
   };
 
   // set user token or unset depending if they're logged out or in
-  // useEffect(() => {
-  //   const cancelAuthListener = firebase
-  //     .auth()
-  //     .onIdTokenChanged(async (user) => {
-  //       if (user) {
-  //         // if theres a user set the user && token cookie
-  //         const token = await user.getIdToken();
-  //         setTokenCookie(token);
-  //         setUser(user);
-  //       } else {
-  //         removeTokenCookie();
-  //         setUser(null);
-  //       }
-  //     });
+  useEffect(() => {
+    const cancelAuthListener = getAuth().onIdTokenChanged(async (user) => {
+      if (user) {
+        // if theres a user set the user && token cookie
+        const token = await user.getIdToken();
+        setTokenCookie(token);
+        setUser(user);
+      } else {
+        removeTokenCookie();
+        setUser(null);
+      }
+    });
 
-  //   // when components unmount, you can call a function
-  //   return () => {
-  //     cancelAuthListener();
-  //   };
-  // }, []);
+    // when components unmount, you can call a function
+    return () => {
+      cancelAuthListener();
+    };
+  }, []);
 
   useEffect(() => {
     const authListener = onAuthStateChanged(auth, (currentUser) => {
@@ -76,7 +73,9 @@ export const AuthProvider: FunctionComponent = ({ children }) => {
         // console.log("here");
         setUser(null);
         setUnknown(false);
-        // router.push("/");
+        if (router.pathname !== "/admin") {
+          router.push("/");
+        }
       }
     });
     return authListener();
