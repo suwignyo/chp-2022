@@ -73,9 +73,10 @@ export const AuthProvider: FunctionComponent = ({ children }) => {
         setUser(currentUser);
         setUnknown(false);
       } else {
+        // console.log("here");
         setUser(null);
         setUnknown(false);
-        router.push("/");
+        // router.push("/");
       }
     });
     return authListener();
