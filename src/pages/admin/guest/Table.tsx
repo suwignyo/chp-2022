@@ -1,4 +1,5 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Input } from "@chakra-ui/react";
+import { useState } from "react";
 import DataTable from "react-data-table-component";
 
 const columns = [
@@ -29,13 +30,28 @@ const columns = [
   {
     name: "Created At",
     selector: (row) => row.created_at,
+    sortable: true,
   },
 ];
 
 const Table = ({ data }) => {
+  const [filterText, setFilterText] = useState("");
+
+  const filteredItems = data.filter(
+    (guest) =>
+      (guest.firstName &&
+        guest.firstName.toLowerCase().includes(filterText.toLowerCase())) ||
+      (guest.lastName &&
+        guest.lastName.toLowerCase().includes(filterText.toLowerCase()))
+  );
+
   return (
     <Box padding={6} width="100%">
-      <DataTable title="Guest List" columns={columns} data={data} />
+      <Input
+        onChange={(e) => setFilterText(e.target.value)}
+        placeholder="Search first or last name"
+      ></Input>
+      <DataTable title="Guest List" columns={columns} data={filteredItems} />
     </Box>
   );
 };
