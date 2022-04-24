@@ -5,14 +5,17 @@ const columns = [
   {
     name: "#",
     selector: (row) => row.count,
+    sortable: true,
   },
   {
     name: "First Name",
     selector: (row) => row.firstName,
+    sortable: true,
   },
   {
     name: "Last Name",
     selector: (row) => row.lastName,
+    sortable: true,
   },
   {
     name: "Phone Number",
@@ -21,6 +24,7 @@ const columns = [
   {
     name: "Email",
     selector: (row) => row.email,
+    sortable: true,
   },
   {
     name: "Created At",
