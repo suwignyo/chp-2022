@@ -6,10 +6,8 @@ import Table from "./Table";
 import { format } from "date-fns";
 
 const Guest = (props) => {
-  const [guestData, setGuestData] = useState<any[]>([]);
-  const getGuest = async () => {
-    const { data, error } = await supabase.from("guest").select();
-    const dataWithNumber = data.map((guest, index) => {
+  const buildGuestData = (guestArray) => {
+    return guestArray.map((guest, index) => {
       const formattedDate = format(new Date(guest.created_at), "MM/dd/yyyy");
 
       return {
@@ -18,17 +16,49 @@ const Guest = (props) => {
         count: index + 1,
       };
     });
-    setGuestData(dataWithNumber);
+  };
+
+  const [guestsData, setGuestsData] = useState<any[]>([]);
+  const getGuests = async () => {
+    const { data, error } = await supabase.from("guest").select();
+    setGuestsData(buildGuestData(data));
   };
 
   useEffect(() => {
-    getGuest();
+    getGuests();
+  }, []);
+
+  useEffect(() => {
+    const guestListener = supabase
+      .from("guest")
+      .on("*", (payload) => {
+        const newGuest = payload.new;
+        setGuestsData((oldGuests) => {
+          const exists = oldGuests.find((guest) => guest.id === newGuest.id);
+          let newGuests;
+          if (exists) {
+            const oldTodoIndex = oldGuests.findIndex(
+              (obj) => obj.id === newGuest.id
+            );
+            oldGuests[oldTodoIndex] = newGuest;
+            newGuests = oldGuests;
+          } else {
+            newGuests = [...oldGuests, newGuest];
+          }
+          return buildGuestData(newGuests);
+        });
+      })
+      .subscribe();
+
+    return () => {
+      guestListener.unsubscribe();
+    };
   }, []);
 
   return (
     <Box padding={6} width="100%">
       <NavBar />
-      <Table data={guestData}></Table>
+      <Table data={guestsData}></Table>
     </Box>
   );
 };

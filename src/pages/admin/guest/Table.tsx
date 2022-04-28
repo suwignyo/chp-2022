@@ -1,6 +1,7 @@
 import { Box, Input } from "@chakra-ui/react";
 import { useState } from "react";
 import DataTable from "react-data-table-component";
+import Edit from "./Edit";
 
 const columns = [
   {
@@ -31,6 +32,11 @@ const columns = [
     name: "Created At",
     selector: (row) => row.created_at,
     sortable: true,
+  },
+  {
+    name: "Edit",
+    button: true,
+    cell: (row) => <Edit row={row} />,
   },
 ];
 
