@@ -43,7 +43,7 @@ const columns = [
 const Table = ({ data }) => {
   const [filterText, setFilterText] = useState("");
 
-  const filteredItems = data.filter(
+  const filteredItems = data?.filter(
     (guest) =>
       (guest.firstName &&
         guest.firstName.toLowerCase().includes(filterText.toLowerCase())) ||
