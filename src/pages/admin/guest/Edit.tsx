@@ -71,7 +71,6 @@ const Edit = ({ row }) => {
       .select(`firstName, lastName, phoneNumber, email`)
       .eq("id", row.id)
       .single();
-    console.log("data in get guest", data);
     setGuestData(data);
   };
 

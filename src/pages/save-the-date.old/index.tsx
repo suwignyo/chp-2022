@@ -31,7 +31,6 @@ const SaveTheDate = () => {
 
   const getGuests = async () => {
     const data = await getDocs(guestCollection);
-    console.log("data", data);
     setGuests(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
   };
 
@@ -47,13 +46,11 @@ const SaveTheDate = () => {
       email: user.email,
       subscribedAt: new Date(),
     });
-    console.log(data);
   };
 
   useEffect(() => {
     getGuests();
   }, []);
-  console.log("guests", guests);
 
   if (loading || !user) return <CircularProgress />;
   return (
