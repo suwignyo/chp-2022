@@ -45,7 +45,6 @@ export const Login = (props) => {
     defaultValues: initialValues,
   });
   // const [authError, setAuthError] = useState<string | null>(null);
-  console.log("ERRORS", errors);
   const { push } = useRouter();
   const [isSigningUp, setSigningUp] = useState<boolean>(false);
   const { user, logout } = useAuth();
@@ -85,7 +84,6 @@ export const Login = (props) => {
     }
   };
   const registerUser = async (data: FormInputs) => {
-    console.log("data", data);
     try {
       const user = await createUserWithEmailAndPassword(
         auth,
@@ -94,7 +92,6 @@ export const Login = (props) => {
       ).then(() => {
         console.log("registered");
       });
-      console.log("user", user);
     } catch (error) {
       console.log("error", error.message);
     }
