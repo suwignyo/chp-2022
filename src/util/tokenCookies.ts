@@ -1,5 +1,4 @@
 export const setTokenCookie = (token: string) => {
-  console.log("token", token);
   fetch("/api/login", {
     method: "post",
     headers: {

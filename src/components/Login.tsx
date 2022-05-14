@@ -20,7 +20,6 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { auth } from "../util/initFirebase";
-import { useAuth } from "../util/useAuth";
 import googleImage from "../images/google.png";
 
 type FormInputs = {
@@ -45,9 +44,7 @@ export const Login = (props) => {
     defaultValues: initialValues,
   });
   // const [authError, setAuthError] = useState<string | null>(null);
-  const { push } = useRouter();
   const [isSigningUp, setSigningUp] = useState<boolean>(false);
-  const { user, logout } = useAuth();
 
   const googleProvider = new GoogleAuthProvider();
 
@@ -70,7 +67,6 @@ export const Login = (props) => {
       ).then(() => {
         console.log("logged in");
       });
-      console.log("user", user);
     } catch (error) {
       console.log("error", error);
       if (error.message.includes("auth/user-not-found")) {
