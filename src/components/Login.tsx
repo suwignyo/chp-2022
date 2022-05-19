@@ -69,10 +69,10 @@ export const Login = (props) => {
       });
     } catch (error) {
       console.log("error", error);
-      if (error.message.includes("auth/user-not-found")) {
+      if (error?.message?.includes("auth/user-not-found")) {
         setError("email", { message: "User not found, please register" });
       }
-      if (error.message.includes("auth/wrong-password")) {
+      if (error?.message?.includes("auth/wrong-password")) {
         setError("email", {
           message: "You have entered an invalid username or password",
         });

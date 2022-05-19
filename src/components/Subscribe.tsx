@@ -82,7 +82,7 @@ export const Subscribe = (props) => {
         phoneNumber: formData.phoneNumber,
       },
     ]);
-    if (error.message.includes("duplicate")) {
+    if (error?.message?.includes("duplicate")) {
       return setAlreadyRegistered(true);
     }
     if (error) {
