@@ -148,6 +148,7 @@ export const Login = (props) => {
       <Flex alignItems="center" justifyContent="center" flex={1} mt={6}>
         <Button type="button" onClick={signInWithGoogle}>
           <Image
+            alt="googlelogo"
             height="24px"
             width="24px"
             mr={2}

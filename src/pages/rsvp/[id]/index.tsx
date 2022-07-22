@@ -3,16 +3,15 @@ import { useRouter } from "next/router";
 import { supabase } from "../../../util/supabaseClient";
 
 const Rsvp = ({ guest }) => {
-  console.log("guest", guest);
   const router = useRouter();
-  console.log("router", router);
+
   if (router.isFallback) {
     return <div>Loading...</div>;
   }
   return (
     <Flex flex={1} alignItems="center" justifyContent="flex-end">
       <Box mr={2}>
-        Hi, {guest.firstName} {guest.lastName}
+        Hi, {guest?.firstName} {guest?.lastName}
       </Box>
     </Flex>
   );

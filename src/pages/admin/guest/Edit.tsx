@@ -110,10 +110,9 @@ const Edit = ({ row }) => {
             id="email"
             borderRadius="0"
           />
-          <InputRightElement
-            pointerEvents="none"
-            children={<EmailIcon color="gray.300" />}
-          />
+          <InputRightElement pointerEvents="none">
+            <EmailIcon color="gray.300" />
+          </InputRightElement>
         </InputGroup>
         <InputGroup>
           <Input
@@ -124,10 +123,9 @@ const Edit = ({ row }) => {
             })}
             borderRadius="0"
           />
-          <InputRightElement
-            pointerEvents="none"
-            children={<PhoneIcon color="gray.300" />}
-          />
+          <InputRightElement pointerEvents="none">
+            <PhoneIcon color="gray.300" />
+          </InputRightElement>
         </InputGroup>
       </Grid>
     </>

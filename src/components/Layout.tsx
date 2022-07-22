@@ -1,5 +1,5 @@
 import { Box, BoxProps, Stack, StackProps } from "@chakra-ui/react";
-import image from "../images/003.jpg";
+
 export const Layout = ({ children }: BoxProps) => (
   <Stack direction="row">
     <Box
