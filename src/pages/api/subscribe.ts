@@ -3,7 +3,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+const Subscribe = async (req: NextApiRequest, res: NextApiResponse) => {
   const { email, firstName, lastName, token } = req.body;
   const msg = {
     to: email,
@@ -43,3 +43,5 @@ async function validateHuman(token: string): Promise<boolean> {
   const data = await response.json();
   return data.success;
 }
+
+export default Subscribe;
