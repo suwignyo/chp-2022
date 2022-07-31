@@ -1,6 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { supabase } from "../../../util/supabaseClient";
+import { RsvpForm } from "./RsvpForm";
 
 const Rsvp = ({ guest }) => {
   const router = useRouter();
@@ -9,9 +10,11 @@ const Rsvp = ({ guest }) => {
     return <div>Loading...</div>;
   }
   return (
-    <Flex flex={1} alignItems="center" justifyContent="flex-end">
-      <Box mr={2}>
-        Hi, {guest?.firstName} {guest?.lastName}
+    <Flex flex={1} alignItems="center" justifyContent="center">
+      <Box width={["90vw", "60vw", "50vw", "35vw"]}>
+        Hi, {guest?.firstName} {guest?.lastName}! We are excited to have you at
+        our wedding! Please fill out the form below as soon as you can!
+        {guest ? <RsvpForm guest={guest} /> : <div>loading</div>}
       </Box>
     </Flex>
   );
