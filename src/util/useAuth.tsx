@@ -70,7 +70,6 @@ export const AuthProvider: FunctionComponent = ({ children }) => {
         setUser(currentUser);
         setUnknown(false);
       } else {
-        // console.log("here");
         setUser(null);
         setUnknown(false);
         if (router.pathname !== "/admin") {

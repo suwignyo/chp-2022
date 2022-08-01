@@ -7,8 +7,10 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
+import Router from "next/router";
 import { useEffect, useState } from "react";
 import { supabase } from "../../util/supabaseClient";
+import { useAuth } from "../../util/useAuth";
 
 const Rsvp = ({}) => {
   const [guestsData, setGuestsData] = useState<any[]>([]);
@@ -23,6 +25,8 @@ const Rsvp = ({}) => {
   }, []);
 
   const toast = useToast();
+
+  const { user, loading } = useAuth();
 
   const sendRsvpForm = async (data) => {
     try {
@@ -45,6 +49,14 @@ const Rsvp = ({}) => {
   const onInvite = (email: string, url: string) => {
     sendRsvpForm({ url: url, email: email });
   };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (user?.email !== "gsuwignyo@gmail.com") {
+    return <div>cannot view</div>;
+  }
 
   return (
     <>

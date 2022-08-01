@@ -8,7 +8,6 @@ import {
   Image,
   Divider,
 } from "@chakra-ui/react";
-import { GetServerSideProps } from "next";
 import Countdown, { CountdownTimeDelta } from "react-countdown";
 import { supabase } from "../util/supabaseClient";
 import { Subscribe } from "./Subscribe";
