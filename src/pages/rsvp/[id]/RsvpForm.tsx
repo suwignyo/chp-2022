@@ -12,7 +12,6 @@ import {
   Radio,
   RadioGroup,
   Stack,
-  Text,
   Textarea,
   useToast,
 } from "@chakra-ui/react";
@@ -32,10 +31,10 @@ type FormInputs = {
 
 const RsvpForm = ({ guest }) => {
   const initialValues: FormInputs = {
-    firstName: guest.firstName,
-    lastName: guest.lastName,
-    email: guest.email,
-    phoneNumber: guest.phoneNumber,
+    firstName: guest?.firstName,
+    lastName: guest?.lastName,
+    email: guest?.email,
+    phoneNumber: guest?.phoneNumber,
     attending: "",
     hasDietaryRestriction: "",
     dietaryRestriction: "",
@@ -107,7 +106,7 @@ const RsvpForm = ({ guest }) => {
     //   });
     // }
     // setCurrentGuest(guest[0]);
-    sendRsvpForm({ url: "www.google.com", email: guest.email });
+    sendRsvpForm({ url: "www.google.com", email: guest?.email });
   };
   const formInvalid = false;
 
