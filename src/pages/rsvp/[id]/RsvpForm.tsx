@@ -30,7 +30,7 @@ type FormInputs = {
   guestName: string;
 };
 
-export const RsvpForm = ({ guest }) => {
+const RsvpForm = ({ guest }) => {
   const initialValues: FormInputs = {
     firstName: guest.firstName,
     lastName: guest.lastName,
@@ -248,3 +248,5 @@ export const RsvpForm = ({ guest }) => {
     </FormControl>
   );
 };
+
+export default RsvpForm;

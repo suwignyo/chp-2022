@@ -1,7 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { supabase } from "../../../util/supabaseClient";
-import { RsvpForm } from "./RsvpForm";
+import RsvpForm from "./RsvpForm";
 
 const Rsvp = ({ guest }) => {
   const router = useRouter();
