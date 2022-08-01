@@ -1,5 +1,5 @@
 import { Box, useColorMode, FlexProps } from "@chakra-ui/react";
-import image from "src/images/003.jpg";
+import image from "../images/003.jpg";
 
 export const Container = ({ children }: FlexProps) => {
   const { colorMode } = useColorMode();
