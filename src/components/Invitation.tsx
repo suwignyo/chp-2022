@@ -7,10 +7,12 @@ import {
   Box,
   Image,
   Divider,
+  Icon,
 } from "@chakra-ui/react";
 import Countdown, { CountdownTimeDelta } from "react-countdown";
 import { supabase } from "../util/supabaseClient";
 import { Subscribe } from "./Subscribe";
+import { GoGift } from "react-icons/go";
 
 import barnImage from "../images/barn.png";
 import churchImage from "../images/church.png";
@@ -154,6 +156,29 @@ export const Invitation = () => {
         bg="burgundy"
       >
         <Subscribe />
+      </Flex>
+      <Flex
+        alignItems="center"
+        justifyContent="center"
+        width="100%"
+        bg="#FAFAFA"
+        flexDirection="column"
+        p="50px"
+        data-aos="fade-up"
+      >
+        <Icon
+          boxSize={50}
+          size={50}
+          as={GoGift}
+          color="black"
+          mb={4}
+          data-aos="flip-down"
+        ></Icon>
+        <Text textAlign={"center"} data-aos="fade-up">
+          Your presence on our wedding day is already a present to us.
+          <br /> However if you would like to send us a gift, <br />
+          please e-transfer to gerchelle.2022@gmail.com
+        </Text>
       </Flex>
     </>
   );
