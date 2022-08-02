@@ -10,6 +10,7 @@ import {
   Input,
   Radio,
   RadioGroup,
+  Select,
   Stack,
   Text,
   Textarea,
@@ -31,7 +32,10 @@ type FormInputs = {
   hasDietaryRestrictions: string;
   hasGuest: string;
   dietaryRestriction?: string;
-  guests?: { name: string }[];
+  guests?: {
+    name: string;
+    attending: "reception" | "ceremony" | "both" | "none" | "";
+  }[];
   songRecommendation?: string;
   mailingAddress?: string;
   notes?: string;
@@ -196,7 +200,19 @@ const RsvpForm = ({ guest }) => {
           />
           {watch("hasGuest") === "yes" && (
             <>
-              <FormLabel mt={4}>Please provide their name:</FormLabel>
+              <FormLabel mt={4}>
+                Please fill out the details for your guest:
+              </FormLabel>
+              <Grid
+                templateColumns="1fr 20px"
+                alignItems="center"
+                mt={2}
+                gridTemplateColumns="2fr 1fr 40px"
+              >
+                <FormLabel>Full Name:</FormLabel>
+                <FormLabel ml={4}>RSVP for:</FormLabel>
+              </Grid>
+
               {times(guestCount, (index) => {
                 return (
                   <Grid
@@ -204,7 +220,7 @@ const RsvpForm = ({ guest }) => {
                     templateColumns="1fr 20px"
                     alignItems="center"
                     mt={index === 0 ? 0 : 4}
-                    gridTemplateColumns="1fr 40px"
+                    gridTemplateColumns="2fr 1fr 40px"
                   >
                     <Input
                       {...register(`guests.${index}.name`)}
@@ -212,7 +228,20 @@ const RsvpForm = ({ guest }) => {
                       placeholder="Guest name"
                       type="text"
                       borderRadius="0"
+                      pr={4}
                     />
+                    <Select
+                      ml={4}
+                      {...register(`guests.${index}.attending`)}
+                      borderRadius="0"
+                    >
+                      <option value="ceremony">Ceremony on Oct 15, 2022</option>
+                      <option value="reception">
+                        Reception on Oct 16, 2022
+                      </option>
+                      <option value="both">Both days</option>
+                      <option value="none">None</option>
+                    </Select>
                     <CloseIcon
                       cursor={"pointer"}
                       onClick={() => {
