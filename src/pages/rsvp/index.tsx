@@ -7,7 +7,6 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
-import Router from "next/router";
 import { useEffect, useState } from "react";
 import { supabase } from "../../util/supabaseClient";
 import { useAuth } from "../../util/useAuth";

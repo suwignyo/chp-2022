@@ -72,7 +72,9 @@ export const AuthProvider: FunctionComponent = ({ children }) => {
       } else {
         setUser(null);
         setUnknown(false);
-        if (router.pathname !== "/admin") {
+        if (
+          !(router.pathname === "/admin" || router.pathname === "/rsvp/[id]")
+        ) {
           router.push("/");
         }
       }
