@@ -16,6 +16,7 @@
     "@fontsource/merriweather": "^4.5.4",
     "@fontsource/raleway": "^4.5.1",
     "@fontsource/the-nautigal": "^4.5.0",
+    "@hookform/error-message": "^2.0.0",
     "@sendgrid/mail": "^7.6.0",
     "@supabase/supabase-js": "^1.30.0",
     "@types/aos": "^3.0.4",

@@ -8,8 +8,6 @@ import {
   FormLabel,
   Grid,
   Input,
-  InputGroup,
-  InputRightElement,
   Radio,
   RadioGroup,
   Stack,
@@ -20,17 +18,21 @@ import {
 import { useEffect, useState } from "react";
 import { useForm, Controller, useFieldArray } from "react-hook-form";
 import { times } from "lodash";
+import { ErrorMessage } from "@hookform/error-message";
+import { supabase } from "../../../util/supabaseClient";
 
 type FormInputs = {
   email: string;
   firstName: string;
   lastName: string;
   phoneNumber: string;
-  attending: string;
-  hasDietaryRestriction: string;
+  attending: "reception" | "ceremony" | "both" | "none" | "";
+  hasDietaryRestrictions: string;
   hasGuest: string;
   dietaryRestriction?: string;
   guests?: { name: string }[];
+  songRecommendation?: string;
+  mailingAddress?: string;
 };
 
 const RsvpForm = ({ guest }) => {
@@ -42,7 +44,7 @@ const RsvpForm = ({ guest }) => {
     email: guest?.email,
     phoneNumber: guest?.phoneNumber,
     attending: "",
-    hasDietaryRestriction: "",
+    hasDietaryRestrictions: "",
     dietaryRestriction: "",
     guests: [],
     hasGuest: "",
@@ -59,15 +61,16 @@ const RsvpForm = ({ guest }) => {
     defaultValues: initialValues,
   });
 
+  const watchHasGuest = watch("hasGuest");
+  const watchHasDietaryRestrictions = watch("hasDietaryRestrictions");
+
   const { fields, remove } = useFieldArray({
     name: "guests",
     control,
   });
 
-  console.log("fields", fields);
-  console.log("watch", watch());
-
-  const watchHasGuest = watch("hasGuest");
+  // console.log("fields", fields);
+  // console.log("errors", errors);
   useEffect(() => {
     if (watchHasGuest === "no") {
       setGuestCount(1);
@@ -83,7 +86,23 @@ const RsvpForm = ({ guest }) => {
   const toast = useToast();
 
   const onSubmit = async (formData: FormInputs) => {
-    console.log("formData", formData);
+    // console.log("formData", formData);
+
+    const { data: rsvpGuest, error } = await supabase
+      .from("guest")
+      .update({
+        rsvp: true,
+        hasGuest: formData.hasGuest,
+        guests: formData.guests,
+        attending: formData.attending,
+        hasDietaryRestrictions: formData.hasDietaryRestrictions,
+        dietaryRestriction: formData.dietaryRestriction,
+        songRecommendation: formData.songRecommendation,
+        mailingAddress: formData.mailingAddress,
+      })
+      .match({ id: guest.id });
+    // console.log("rsvpGuest", rsvpGuest);
+    // console.log("error submitting", error);
   };
 
   const formInvalid = false;
@@ -93,62 +112,8 @@ const RsvpForm = ({ guest }) => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <Box
           p={8}
-          boxShadow="2px 4px 8px rgba(0, 0, 0, 0.2)"
-          borderRadius={10}
-          mt={8}
-          mb={8}
-        >
-          <FormLabel>First name:</FormLabel>
-          <Input
-            {...register("firstName", {
-              required: "First name is required",
-            })}
-            placeholder="First name"
-            type="text"
-            borderRadius="0"
-          />
-          <FormLabel mt={4}>Last name:</FormLabel>
-          <Input
-            {...register("lastName", {
-              required: "Last name is required",
-            })}
-            placeholder="Last name"
-            type="text"
-            borderRadius="0"
-          />
-          <FormLabel mt={4}>Email:</FormLabel>
-          <InputGroup>
-            <Input
-              {...register("email", {
-                required: "Email is required",
-              })}
-              placeholder="Email"
-              id="email"
-              borderRadius="0"
-            />
-            <InputRightElement pointerEvents="none">
-              <EmailIcon color="gray.300" />
-            </InputRightElement>
-          </InputGroup>
-          <FormLabel mt={4}>Phone number:</FormLabel>
-          <InputGroup>
-            <Input
-              type="tel"
-              placeholder="Phone number"
-              {...register("phoneNumber", {
-                required: "Please enter phone number",
-              })}
-              borderRadius="0"
-            />
-            <InputRightElement pointerEvents="none">
-              <PhoneIcon color="gray.300" />
-            </InputRightElement>
-          </InputGroup>
-        </Box>
-        <Box
-          p={8}
           boxShadow="2px 4px 8px rgba(0,0,0,0.2)"
-          borderRadius={10}
+          borderRadius={2}
           mt={8}
           mb={8}
         >
@@ -158,6 +123,7 @@ const RsvpForm = ({ guest }) => {
           <Controller
             name="attending"
             control={control}
+            rules={{ required: "Please select an option" }}
             render={({ field: { onChange, value } }) => (
               <RadioGroup onChange={onChange} value={value}>
                 <Stack direction="column">
@@ -169,12 +135,21 @@ const RsvpForm = ({ guest }) => {
               </RadioGroup>
             )}
           />
+          <ErrorMessage
+            errors={errors}
+            name="attending"
+            render={({ message }) => (
+              <Text mt={2} color="red">
+                {message}
+              </Text>
+            )}
+          />
         </Box>
 
         <Box
           p={8}
           boxShadow="2px 4px 8px rgba(0,0,0,0.2)"
-          borderRadius={10}
+          borderRadius={2}
           mt={8}
           mb={8}
         >
@@ -182,6 +157,7 @@ const RsvpForm = ({ guest }) => {
           <Controller
             name="hasGuest"
             control={control}
+            rules={{ required: "Please select an option" }}
             render={({ field: { onChange, value } }) => (
               <RadioGroup onChange={onChange} value={value}>
                 <Stack direction="row">
@@ -189,6 +165,15 @@ const RsvpForm = ({ guest }) => {
                   <Radio value="no">No</Radio>
                 </Stack>
               </RadioGroup>
+            )}
+          />
+          <ErrorMessage
+            errors={errors}
+            name="hasGuest"
+            render={({ message }) => (
+              <Text mt={2} color="red">
+                {message}
+              </Text>
             )}
           />
           {watch("hasGuest") === "yes" && (
@@ -223,25 +208,27 @@ const RsvpForm = ({ guest }) => {
                   </Grid>
                 );
               })}
+              {guest?.allowMultipleInvites && (
+                <Flex
+                  onClick={() => {
+                    setGuestCount(guestCount + 1);
+                  }}
+                  my={2}
+                  cursor="pointer"
+                  alignItems={"center"}
+                >
+                  <AddIcon color="gray.300" mr="2" />
+                  <Text>Add another guest</Text>
+                </Flex>
+              )}
             </>
           )}
-          <Flex
-            onClick={() => {
-              setGuestCount(guestCount + 1);
-            }}
-            my={2}
-            cursor="pointer"
-            alignItems={"center"}
-          >
-            <AddIcon color="gray.300" mr="2" />
-            <Text>Add another guest</Text>
-          </Flex>
         </Box>
 
         <Box
           p={8}
           boxShadow="2px 4px 8px rgba(0,0,0,0.2)"
-          borderRadius={10}
+          borderRadius={2}
           mt={8}
           mb={8}
         >
@@ -249,7 +236,8 @@ const RsvpForm = ({ guest }) => {
             Do you or your guest have any dietary restrictions?
           </FormLabel>
           <Controller
-            name="hasDietaryRestriction"
+            name="hasDietaryRestrictions"
+            rules={{ required: "Please select an option" }}
             control={control}
             render={({ field: { onChange, value } }) => (
               <RadioGroup onChange={onChange} value={value}>
@@ -260,13 +248,54 @@ const RsvpForm = ({ guest }) => {
               </RadioGroup>
             )}
           />
-          {watch("hasDietaryRestriction") === "yes" && (
-            <Textarea
-              mt={4}
-              name="dietaryRestriction"
-              placeholder="Please specify you &amp; your guest dietary restriction(s)"
-            />
+          {watch("hasDietaryRestrictions") === "yes" && (
+            <>
+              <Textarea
+                mt={4}
+                {...register("dietaryRestriction", {
+                  required: watchHasDietaryRestrictions,
+                })}
+                placeholder="Please specify you &amp; your guest dietary restriction(s)"
+              />
+              <ErrorMessage
+                errors={errors}
+                name="dietaryRestriction"
+                render={() => (
+                  <Text mt={2} color="red">
+                    Please specify you &amp; your guest dietary restriction(s)
+                  </Text>
+                )}
+              />
+            </>
           )}
+        </Box>
+        <Box
+          p={8}
+          boxShadow="2px 4px 8px rgba(0,0,0,0.2)"
+          borderRadius={2}
+          mt={8}
+          mb={8}
+        >
+          <FormLabel>Do you have any song recommendation(s)?</FormLabel>
+          <Textarea
+            mt={4}
+            {...register("songRecommendation")}
+            placeholder="Song recommendation(s)"
+          />
+        </Box>
+        <Box
+          p={8}
+          boxShadow="2px 4px 8px rgba(0,0,0,0.2)"
+          borderRadius={2}
+          mt={8}
+          mb={8}
+        >
+          <FormLabel>Please provide your mailing address:</FormLabel>
+          <Textarea
+            mt={4}
+            {...register("mailingAddress")}
+            placeholder="Your mailing address"
+          />
         </Box>
         <FormErrorMessage>{errors?.firstName?.message}</FormErrorMessage>
         <FormErrorMessage>{errors?.email?.message}</FormErrorMessage>
@@ -279,7 +308,7 @@ const RsvpForm = ({ guest }) => {
             disabled={isSubmitting}
             borderRadius="0"
           >
-            RSVP
+            Submit RSVP
           </Button>
         </Flex>
       </form>
