@@ -121,7 +121,7 @@ const RsvpForm = ({ guest }) => {
 
   const formInvalid = false;
 
-  if (guest.rsvp && !showForm) {
+  if (guest?.rsvp && !showForm) {
     return <RsvpUpdate setShowForm={setShowForm} />;
   }
 
