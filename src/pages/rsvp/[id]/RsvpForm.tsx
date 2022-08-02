@@ -20,6 +20,7 @@ import { useForm, Controller, useFieldArray } from "react-hook-form";
 import { times } from "lodash";
 import { ErrorMessage } from "@hookform/error-message";
 import { supabase } from "../../../util/supabaseClient";
+import RsvpUpdate from "./RsvpUpdate";
 
 type FormInputs = {
   email: string;
@@ -33,21 +34,30 @@ type FormInputs = {
   guests?: { name: string }[];
   songRecommendation?: string;
   mailingAddress?: string;
+  notes?: string;
 };
 
 const RsvpForm = ({ guest }) => {
-  const [guestCount, setGuestCount] = useState(1);
+  const [guestCount, setGuestCount] = useState(guest?.guests.length || 1);
+  const [showForm, setShowForm] = useState(false);
+
+  const parsedGuest = guest?.guests.map((name) => {
+    return JSON.parse(name);
+  });
 
   const initialValues: FormInputs = {
     firstName: guest?.firstName,
     lastName: guest?.lastName,
     email: guest?.email,
     phoneNumber: guest?.phoneNumber,
-    attending: "",
-    hasDietaryRestrictions: "",
-    dietaryRestriction: "",
-    guests: [],
-    hasGuest: "",
+    attending: guest?.attending,
+    hasDietaryRestrictions: guest?.hasDietaryRestrictions ? "yes" : "no",
+    dietaryRestriction: guest?.dietaryRestriction,
+    guests: parsedGuest,
+    hasGuest: guest?.hasGuest ? "yes" : "no",
+    songRecommendation: guest?.songRecommendation,
+    mailingAddress: guest?.mailingAddress,
+    notes: guest?.notes,
   };
 
   const {
@@ -69,8 +79,6 @@ const RsvpForm = ({ guest }) => {
     control,
   });
 
-  // console.log("fields", fields);
-  // console.log("errors", errors);
   useEffect(() => {
     if (watchHasGuest === "no") {
       setGuestCount(1);
@@ -78,34 +86,44 @@ const RsvpForm = ({ guest }) => {
     }
   }, [watchHasGuest, remove]);
 
-  // const onSubmit = () => {
-  //   console.log("errors", errors);
-  //   console.log("submitted", watch());
-  // };
-
   const toast = useToast();
 
   const onSubmit = async (formData: FormInputs) => {
-    // console.log("formData", formData);
-
     const { data: rsvpGuest, error } = await supabase
       .from("guest")
       .update({
         rsvp: true,
-        hasGuest: formData.hasGuest,
-        guests: formData.guests,
+        hasGuest: formData.hasGuest === "yes" ? true : false,
+        guests: formData.hasGuest === "yes" ? formData.guests : [],
         attending: formData.attending,
-        hasDietaryRestrictions: formData.hasDietaryRestrictions,
-        dietaryRestriction: formData.dietaryRestriction,
+        hasDietaryRestrictions:
+          formData.hasDietaryRestrictions === "yes" ? true : false,
+        dietaryRestriction:
+          formData.hasDietaryRestrictions === "yes"
+            ? formData.dietaryRestriction
+            : "",
         songRecommendation: formData.songRecommendation,
         mailingAddress: formData.mailingAddress,
       })
       .match({ id: guest.id });
-    // console.log("rsvpGuest", rsvpGuest);
-    // console.log("error submitting", error);
+
+    if (rsvpGuest) {
+      toast({
+        title: "Success!",
+        description: "You have submitted your RSVP, see you at our wedding!",
+        status: "success",
+        duration: 9000,
+        isClosable: true,
+      });
+      setShowForm(false);
+    }
   };
 
   const formInvalid = false;
+
+  if (guest.rsvp && !showForm) {
+    return <RsvpUpdate setShowForm={setShowForm} />;
+  }
 
   return (
     <FormControl isInvalid={formInvalid}>
@@ -295,6 +313,20 @@ const RsvpForm = ({ guest }) => {
             mt={4}
             {...register("mailingAddress")}
             placeholder="Your mailing address"
+          />
+        </Box>
+        <Box
+          p={8}
+          boxShadow="2px 4px 8px rgba(0,0,0,0.2)"
+          borderRadius={2}
+          mt={8}
+          mb={8}
+        >
+          <FormLabel>Additional notes:</FormLabel>
+          <Textarea
+            mt={4}
+            {...register("notes")}
+            placeholder="Any additional notes you would like to share with us"
           />
         </Box>
         <FormErrorMessage>{errors?.firstName?.message}</FormErrorMessage>

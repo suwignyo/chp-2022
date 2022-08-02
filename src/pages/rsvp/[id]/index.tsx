@@ -5,7 +5,6 @@ import RsvpForm from "./RsvpForm";
 
 const Rsvp = ({ guest }) => {
   const router = useRouter();
-
   if (router.isFallback) {
     return <div>Loading...</div>;
   }
@@ -44,8 +43,10 @@ const Rsvp = ({ guest }) => {
 
         <Text textAlign={"center"}>
           Hi, {guest?.firstName} {guest?.lastName}! We are excited to have you
-          at our wedding! Please fill out the form below before September 2,
-          2022!
+          at our wedding!{" "}
+          {!guest?.rsvp &&
+            `Please fill out the form below before September 2,
+            2022!`}
         </Text>
         {guest ? <RsvpForm guest={guest} /> : <div>loading</div>}
       </Box>
