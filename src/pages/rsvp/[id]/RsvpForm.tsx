@@ -30,7 +30,7 @@ type FormInputs = {
   hasDietaryRestriction: string;
   hasGuest: string;
   dietaryRestriction?: string;
-  guestName?: { name: string }[];
+  guests?: { name: string }[];
 };
 
 const RsvpForm = ({ guest }) => {
@@ -44,7 +44,7 @@ const RsvpForm = ({ guest }) => {
     attending: "",
     hasDietaryRestriction: "",
     dietaryRestriction: "",
-    guestName: [],
+    guests: [],
     hasGuest: "",
   };
 
@@ -59,8 +59,8 @@ const RsvpForm = ({ guest }) => {
     defaultValues: initialValues,
   });
 
-  const { fields, append, remove } = useFieldArray({
-    name: "guestName",
+  const { fields, remove } = useFieldArray({
+    name: "guests",
     control,
   });
 
@@ -71,8 +71,9 @@ const RsvpForm = ({ guest }) => {
   useEffect(() => {
     if (watchHasGuest === "no") {
       setGuestCount(1);
+      remove();
     }
-  }, [watchHasGuest]);
+  }, [watchHasGuest, remove]);
 
   // const onSubmit = () => {
   //   console.log("errors", errors);
@@ -81,53 +82,10 @@ const RsvpForm = ({ guest }) => {
 
   const toast = useToast();
 
-  const sendRsvpForm = async (data) => {
-    try {
-      await fetch("/api/subscribe", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify(data),
-      });
-
-      // toast notification
-      setTimeout(() => {
-        // reset();
-        toast({
-          title: "Sent!",
-          description: "We've sent an email.",
-          status: "success",
-          duration: 9000,
-          isClosable: true,
-        });
-      }, 1000);
-    } catch (error) {
-      // toast error message
-    }
-  };
-
   const onSubmit = async (formData: FormInputs) => {
     console.log("formData", formData);
-    // const { data: guest, error } = await supabase.from("guest").insert([
-    //   {
-    //     firstName: formData.firstName,
-    //     lastName: formData.lastName,
-    //     email: formData.email,
-    //     phoneNumber: formData.phoneNumber,
-    //   },
-    // ]);
-    // if (error?.message?.includes("duplicate")) {
-    //   return setAlreadyRegistered(true);
-    // }
-    // if (error) {
-    //   console.log("error", error);
-    //   return setError("firstName", {
-    //     message:
-    //       "There was an issue submitting your information, please try a different email address or phone number",
-    //   });
-    // }
-    // setCurrentGuest(guest[0]);
-    // sendRsvpForm({ url: "www.google.com", email: guest?.email });
   };
+
   const formInvalid = false;
 
   return (
@@ -239,17 +197,15 @@ const RsvpForm = ({ guest }) => {
               {times(guestCount, (index) => {
                 return (
                   <Grid
-                    key={`guestName${index}`}
+                    key={`guests${index}`}
                     templateColumns="1fr 20px"
                     alignItems="center"
                     mt={index === 0 ? 0 : 4}
                     gridTemplateColumns="1fr 40px"
                   >
                     <Input
-                      {...register("guestName", {
-                        required: "Guest name is required",
-                      })}
-                      key={`guestName${index}`}
+                      {...register(`guests.${index}.name`)}
+                      key={`guests${index}`}
                       placeholder="Guest name"
                       type="text"
                       borderRadius="0"
@@ -258,6 +214,7 @@ const RsvpForm = ({ guest }) => {
                       cursor={"pointer"}
                       onClick={() => {
                         setGuestCount(guestCount - 1);
+                        remove(index);
                       }}
                       color="gray.300"
                       ml="2"
