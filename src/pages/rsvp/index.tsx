@@ -32,6 +32,17 @@ const Rsvp = ({}) => {
     if (rsvpGuest) getGuests();
   };
 
+  const onAddEmailSentTimes = async (timesSent, guestId) => {
+    const { data: rsvpGuest, error } = await supabase
+      .from("guest")
+      .update({
+        emailSent: timesSent,
+      })
+      .match({ id: guestId });
+
+    if (rsvpGuest) getGuests();
+  };
+
   useEffect(() => {
     getGuests();
   }, []);
@@ -87,7 +98,12 @@ const Rsvp = ({}) => {
         {guestsData?.map((guest, index) => {
           return (
             <div key={guest.uuid}>
-              <Flex justifyContent="center" alignItems={"center"}>
+              <Flex
+                justifyContent="center"
+                alignItems={"center"}
+                my={4}
+                boxShadow="2px 4px 8px rgba(0,0,0,0.2)"
+              >
                 <Text mr="4">{index + 1}</Text>
                 <Link href={`rsvp/${guest.uuid}`} textDecoration="underline">
                   {guest.firstName} {guest.lastName}
@@ -108,21 +124,24 @@ const Rsvp = ({}) => {
                     }
                   ></Switch>
                 </Box>
-                <Button
-                  mt="4"
-                  type="submit"
-                  onClick={() =>
-                    onInvite(
-                      guest.email,
-                      `${window.location.href}/${guest.uuid}`,
-                      guest.firstName,
-                      guest.lastName
-                    )
-                  }
-                  borderRadius="0"
-                >
-                  Send rsvp email
-                </Button>
+                <Box px={8}>
+                  <Text>Email sent: {guest.emailSent} times</Text>
+                  <Button
+                    type="submit"
+                    onClick={() => {
+                      onInvite(
+                        guest.email,
+                        `${window.location.href}/${guest.uuid}`,
+                        guest.firstName,
+                        guest.lastName
+                      );
+                      onAddEmailSentTimes(guest.emailSent + 1, guest.id);
+                    }}
+                    borderRadius="0"
+                  >
+                    Send rsvp email
+                  </Button>
+                </Box>
               </Flex>
             </div>
           );
