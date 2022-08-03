@@ -16,6 +16,7 @@ import {
   Text,
   Textarea,
   useToast,
+  Link,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useForm, Controller, useFieldArray } from "react-hook-form";
@@ -359,8 +360,16 @@ const RsvpForm = ({ guest }) => {
             placeholder="Any additional notes you would like to share with us"
           />
         </Box>
-        <FormErrorMessage>{errors?.firstName?.message}</FormErrorMessage>
-        <FormErrorMessage>{errors?.email?.message}</FormErrorMessage>
+        <Text textAlign={"center"}>
+          Please email at{" "}
+          <Link
+            href={`mailto:${`gerchelle.2022@gmail.com`}`}
+            textDecoration="underline"
+          >
+            gerchelle.2022@gmail.com
+          </Link>{" "}
+          at or text us at 647-648-4369 if you have any questions or concerns.
+        </Text>
         <Flex justifyContent="center">
           <Button
             mt="4"
