@@ -7,6 +7,7 @@ import {
   FormErrorMessage,
   FormLabel,
   Grid,
+  GridItem,
   Input,
   Radio,
   RadioGroup,
@@ -133,7 +134,7 @@ const RsvpForm = ({ guest }) => {
     <FormControl isInvalid={formInvalid}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Box
-          p={8}
+          p={[4, 4, 6, 8]}
           boxShadow="2px 4px 8px rgba(0,0,0,0.2)"
           borderRadius={2}
           mt={8}
@@ -169,7 +170,7 @@ const RsvpForm = ({ guest }) => {
         </Box>
 
         <Box
-          p={8}
+          p={[4, 4, 6, 8]}
           boxShadow="2px 4px 8px rgba(0,0,0,0.2)"
           borderRadius={2}
           mt={8}
@@ -204,23 +205,23 @@ const RsvpForm = ({ guest }) => {
                 Please fill out the details for your guest:
               </FormLabel>
               <Grid
-                templateColumns="1fr 20px"
                 alignItems="center"
                 mt={2}
-                gridTemplateColumns="2fr 1fr 40px"
+                gridTemplateColumns="3fr 2fr 28px"
+                gridGap={"4px"}
               >
                 <FormLabel>Full Name:</FormLabel>
-                <FormLabel ml={4}>RSVP for:</FormLabel>
+                <FormLabel>RSVP for:</FormLabel>
               </Grid>
 
               {times(guestCount, (index) => {
                 return (
                   <Grid
                     key={`guests${index}`}
-                    templateColumns="1fr 20px"
                     alignItems="center"
                     mt={index === 0 ? 0 : 4}
-                    gridTemplateColumns="2fr 1fr 40px"
+                    gridTemplateColumns="3fr 2fr 28px"
+                    gridGap={"4px"}
                   >
                     <Input
                       {...register(`guests.${index}.name`)}
@@ -228,10 +229,8 @@ const RsvpForm = ({ guest }) => {
                       placeholder="Guest name"
                       type="text"
                       borderRadius="0"
-                      pr={4}
                     />
                     <Select
-                      ml={4}
                       {...register(`guests.${index}.attending`)}
                       borderRadius="0"
                     >
@@ -242,16 +241,18 @@ const RsvpForm = ({ guest }) => {
                       <option value="both">Both days</option>
                       <option value="none">None</option>
                     </Select>
-                    <CloseIcon
-                      cursor={"pointer"}
-                      onClick={() => {
-                        setGuestCount(guestCount - 1);
-                        remove(index);
-                      }}
-                      color="gray.300"
-                      ml="2"
-                      display={index === 0 ? "none" : "block"}
-                    ></CloseIcon>
+                    <GridItem>
+                      <CloseIcon
+                        cursor={"pointer"}
+                        onClick={() => {
+                          setGuestCount(guestCount - 1);
+                          remove(index);
+                        }}
+                        color="gray.300"
+                        ml="2"
+                        display={index === 0 ? "none" : "block"}
+                      ></CloseIcon>
+                    </GridItem>
                   </Grid>
                 );
               })}
@@ -273,7 +274,7 @@ const RsvpForm = ({ guest }) => {
         </Box>
 
         <Box
-          p={8}
+          p={[4, 4, 6, 8]}
           boxShadow="2px 4px 8px rgba(0,0,0,0.2)"
           borderRadius={2}
           mt={8}
@@ -317,7 +318,7 @@ const RsvpForm = ({ guest }) => {
           )}
         </Box>
         <Box
-          p={8}
+          p={[4, 4, 6, 8]}
           boxShadow="2px 4px 8px rgba(0,0,0,0.2)"
           borderRadius={2}
           mt={8}
@@ -331,7 +332,7 @@ const RsvpForm = ({ guest }) => {
           />
         </Box>
         <Box
-          p={8}
+          p={[4, 4, 6, 8]}
           boxShadow="2px 4px 8px rgba(0,0,0,0.2)"
           borderRadius={2}
           mt={8}
@@ -345,7 +346,7 @@ const RsvpForm = ({ guest }) => {
           />
         </Box>
         <Box
-          p={8}
+          p={[4, 4, 6, 8]}
           boxShadow="2px 4px 8px rgba(0,0,0,0.2)"
           borderRadius={2}
           mt={8}
