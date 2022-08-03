@@ -4,6 +4,7 @@ import {
   Flex,
   Grid,
   Link,
+  Switch,
   Text,
   useToast,
 } from "@chakra-ui/react";
@@ -17,6 +18,18 @@ const Rsvp = ({}) => {
   const getGuests = async () => {
     const { data, error } = await supabase.from("guest").select();
     setGuestsData(data);
+  };
+
+  const onAllowMultipleSwitch = async (allowMultipleInvites, guestId) => {
+    const { data: rsvpGuest, error } = await supabase
+      .from("guest")
+      .update({
+        allowMultipleInvites: allowMultipleInvites,
+      })
+      .match({ id: guestId });
+
+    console.log("rsvpGuest", rsvpGuest);
+    if (rsvpGuest) getGuests();
   };
 
   useEffect(() => {
@@ -79,6 +92,22 @@ const Rsvp = ({}) => {
                 <Link href={`rsvp/${guest.uuid}`} textDecoration="underline">
                   {guest.firstName} {guest.lastName}
                 </Link>
+                <Box px={8}>
+                  <Text>
+                    Can invite multiple:{" "}
+                    {guest.allowMultipleInvites ? "yes" : "no"}
+                  </Text>
+                  <Switch
+                    id="allowMultipleInvites"
+                    isChecked={guest.allowMultipleInvites}
+                    onChange={() =>
+                      onAllowMultipleSwitch(
+                        !guest.allowMultipleInvites,
+                        guest.id
+                      )
+                    }
+                  ></Switch>
+                </Box>
                 <Button
                   mt="4"
                   type="submit"
