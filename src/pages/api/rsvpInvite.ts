@@ -4,7 +4,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 const RsvpInvite = async (req: NextApiRequest, res: NextApiResponse) => {
-  const { email, url } = req.body;
+  const { email, url, firstName, lastName } = req.body;
   const msg = {
     to: email,
     from: { name: "Gerry & Michelle", email: "gerchelle.2022@gmail.com" },
@@ -12,7 +12,11 @@ const RsvpInvite = async (req: NextApiRequest, res: NextApiResponse) => {
     personalizations: [
       {
         to: email,
-        dynamicTemplateData: { url: url },
+        dynamicTemplateData: {
+          url: url,
+          firstName: firstName,
+          lastName: lastName,
+        },
       },
     ],
   };

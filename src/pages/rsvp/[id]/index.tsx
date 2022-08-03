@@ -1,4 +1,4 @@
-import { Box, Divider, Flex, Heading, Text } from "@chakra-ui/react";
+import { Box, Divider, Flex, Heading, Spinner, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { supabase } from "../../../util/supabaseClient";
 import RsvpForm from "./RsvpForm";
@@ -6,7 +6,16 @@ import RsvpForm from "./RsvpForm";
 const Rsvp = ({ guest }) => {
   const router = useRouter();
   if (router.isFallback) {
-    return <div>Loading...</div>;
+    return (
+      <Flex
+        height={"100vh"}
+        justifyContent={"center"}
+        alignItems={"center"}
+        flex={1}
+      >
+        <Spinner size={"xl"} />
+      </Flex>
+    );
   }
   return (
     <Flex flex={1} alignItems="center" justifyContent="center">

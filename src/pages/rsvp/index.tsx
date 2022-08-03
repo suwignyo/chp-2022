@@ -45,8 +45,18 @@ const Rsvp = ({}) => {
     } catch (error) {}
   };
 
-  const onInvite = (email: string, url: string) => {
-    sendRsvpForm({ url: url, email: email });
+  const onInvite = (
+    email: string,
+    url: string,
+    firstName: string,
+    lastName: string
+  ) => {
+    sendRsvpForm({
+      url: url,
+      email: email,
+      firstName: firstName,
+      lastName: lastName,
+    });
   };
 
   if (loading) {
@@ -75,7 +85,9 @@ const Rsvp = ({}) => {
                   onClick={() =>
                     onInvite(
                       guest.email,
-                      `${window.location.href}/${guest.uuid}`
+                      `${window.location.href}/${guest.uuid}`,
+                      guest.firstName,
+                      guest.lastName
                     )
                   }
                   borderRadius="0"
