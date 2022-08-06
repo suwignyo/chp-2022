@@ -37,7 +37,7 @@ const Edit = ({ row }) => {
 
   useEffect(() => {
     reset(guestData);
-  }, [guestData]);
+  }, [guestData, reset]);
 
   const onSubmit = async (formData: FormInputs) => {
     const { data: guest, error } = await supabase
