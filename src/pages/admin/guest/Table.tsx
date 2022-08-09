@@ -1,4 +1,5 @@
 import { Box, Grid, Input, Text } from "@chakra-ui/react";
+import { format } from "date-fns";
 import { useState } from "react";
 import DataTable from "react-data-table-component";
 import Edit from "./Edit";
@@ -54,6 +55,11 @@ const Table = ({ data }) => {
     {
       name: "Created At",
       selector: (row) => row.created_at,
+      sortable: true,
+    },
+    {
+      name: "Updated At",
+      selector: (row) => format(new Date(row.updatedAt), "HH:mm MM/dd/yyyy"),
       sortable: true,
     },
     {

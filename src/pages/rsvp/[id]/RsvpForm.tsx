@@ -110,6 +110,7 @@ const RsvpForm = ({ guest }) => {
             : "",
         songRecommendation: formData.songRecommendation,
         mailingAddress: formData.mailingAddress,
+        updatedAt: new Date(),
       })
       .match({ id: guest.id });
 
