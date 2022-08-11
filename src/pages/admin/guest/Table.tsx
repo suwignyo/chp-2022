@@ -1,4 +1,4 @@
-import { Box, Grid, Input, Text } from "@chakra-ui/react";
+import { Box, Grid, Input, Text, Flex } from "@chakra-ui/react";
 import { format } from "date-fns";
 import { useState } from "react";
 import DataTable from "react-data-table-component";
@@ -6,17 +6,17 @@ import Edit from "./Edit";
 
 const Guest = ({ jsonString }) => {
   return (
-    <Box>
+    <>
       {jsonString?.map((additionalGuestsJson) => {
         const extraGuests = JSON.parse(additionalGuestsJson);
         return (
-          <Grid key={extraGuests.name} gridTemplateColumns="1fr 1fr">
-            <Text>{extraGuests.name}</Text>
+          <Grid key={extraGuests.name} gridTemplateColumns="2fr 1fr">
+            <Text pr={3}>{extraGuests.name}</Text>
             <Text>{extraGuests.attending}</Text>
           </Grid>
         );
       })}
-    </Box>
+    </>
   );
 };
 const Table = ({ data }) => {
@@ -61,6 +61,7 @@ const Table = ({ data }) => {
       name: "Updated At",
       selector: (row) => format(new Date(row.updatedAt), "MM/dd/yyyy HH:mm"),
       sortable: true,
+      width: "200px",
     },
     {
       name: <div>Has Rsvp&apos;d ({hasRsvpedCount})</div>,
@@ -84,6 +85,12 @@ const Table = ({ data }) => {
       sortable: true,
       selector: (row) => row.guest,
       cell: (row) => <Guest jsonString={row.guests} />,
+      width: "300px",
+      grow: 1,
+      style: {
+        display: "grid",
+        gridTemplateColumns: "1fr",
+      },
     },
     {
       name: "Edit",
