@@ -59,7 +59,7 @@ const Table = ({ data }) => {
     },
     {
       name: "Updated At",
-      selector: (row) => format(new Date(row.updatedAt), "HH:mm MM/dd/yyyy"),
+      selector: (row) => format(new Date(row.updatedAt), "MM/dd/yyyy HH:mm"),
       sortable: true,
     },
     {
