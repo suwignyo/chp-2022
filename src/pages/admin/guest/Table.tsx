@@ -1,8 +1,9 @@
-import { Box, Grid, Input, Text, Flex } from "@chakra-ui/react";
+import { Box, Grid, Input, Text, Flex, Button } from "@chakra-ui/react";
 import { format } from "date-fns";
 import { useState } from "react";
 import DataTable from "react-data-table-component";
 import Edit from "./Edit";
+import { CSVLink } from "react-csv";
 
 const Guest = ({ jsonString }) => {
   return (
@@ -154,6 +155,10 @@ const Table = ({ data }) => {
       <Box>Both: {bothCount + guestBothCount}</Box>
       <Box>Reception total: {receptionCount + guestReceptionCount}</Box>
       <Box>Ceremony total: {ceremonyCount + guestCeremonyCount}</Box>
+      <CSVLink data={data}>
+        <Button mt={3}>Export list to csv</Button>
+      </CSVLink>
+
       <DataTable title="Guest List" columns={columns} data={filteredItems} />
     </Box>
   );
