@@ -4,6 +4,7 @@ import { useState } from "react";
 import DataTable from "react-data-table-component";
 import Edit from "./Edit";
 import { CSVLink } from "react-csv";
+import { log } from "console";
 
 const Guest = ({ jsonString }) => {
   return (
@@ -52,6 +53,22 @@ const Table = ({ data }) => {
   // console.log("guestBothCount", guestBothCount);
   // console.log("guestReceptionCount", guestReceptionCount);
   // console.log("guestCeremonyCount", guestCeremonyCount);
+  const attendanceList = data.reduce((prev, guest) => {
+    let guestArr = [
+      {
+        name: `${guest.firstName} ${guest.lastName}`,
+        attending: guest.attending,
+      },
+    ];
+    if (guest.hasGuest) {
+      const moreGuests = guest.guests;
+      moreGuests.forEach((more) => {
+        const moreObject = JSON.parse(more);
+        guestArr.push(moreObject);
+      });
+    }
+    return [...prev, ...guestArr];
+  }, []);
 
   const columns = [
     {
@@ -157,6 +174,9 @@ const Table = ({ data }) => {
       <Box>Ceremony total: {ceremonyCount + guestCeremonyCount}</Box>
       <CSVLink data={data}>
         <Button mt={3}>Export list to csv</Button>
+      </CSVLink>
+      <CSVLink data={attendanceList}>
+        <Button mt={3}>Just name</Button>
       </CSVLink>
 
       <DataTable title="Guest List" columns={columns} data={filteredItems} />
