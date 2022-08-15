@@ -20,14 +20,38 @@ const Guest = ({ jsonString }) => {
   );
 };
 const Table = ({ data }) => {
-  const hasRsvpedCount = data?.reduce(
-    (prev, guest) => (guest.rsvp ? prev + 1 : prev),
-    0
-  );
-
-  const extraGuestsCount = data?.reduce((prev, guest) => {
-    return prev + guest.guests.length;
+  let bothCount = 0;
+  let receptionCount = 0;
+  let ceremonyCount = 0;
+  let extraGuestsCount = 0;
+  let guestReceptionCount = 0;
+  let guestBothCount = 0;
+  let guestCeremonyCount = 0;
+  const hasRsvpedCount = data?.reduce((prev, guest) => {
+    if (guest.attending === "both") bothCount++;
+    if (guest.attending === "ceremony") ceremonyCount++;
+    if (guest.attending === "reception") receptionCount++;
+    if (guest.hasGuest) {
+      extraGuestsCount = extraGuestsCount + guest.guests.length;
+      const moreGuests = guest.guests;
+      moreGuests.forEach((more) => {
+        const moreObject = JSON.parse(more);
+        if (moreObject.attending === "both") guestBothCount++;
+        if (moreObject.attending === "ceremony") guestCeremonyCount++;
+        if (moreObject.attending === "reception") guestReceptionCount++;
+      });
+    }
+    return guest.rsvp ? prev + 1 : prev;
   }, 0);
+
+  // console.log("bothCount", bothCount);
+  // console.log("receptionCount", receptionCount);
+  // console.log("ceremonyCount", ceremonyCount);
+  // console.log("extraGuestsCount", extraGuestsCount);
+  // console.log("guestBothCount", guestBothCount);
+  // console.log("guestReceptionCount", guestReceptionCount);
+  // console.log("guestCeremonyCount", guestCeremonyCount);
+
   const columns = [
     {
       name: "#",
@@ -74,6 +98,7 @@ const Table = ({ data }) => {
       selector: (row) => row.attending,
       sortable: true,
     },
+
     {
       name: "Has guest",
       sortable: true,
@@ -81,7 +106,7 @@ const Table = ({ data }) => {
       cell: (row) => <div>{row.hasGuest ? "true" : "false"}</div>,
     },
     {
-      name: <div>Guest(s) ({extraGuestsCount})</div>,
+      name: <div>Guest(s) ({extraGuestsCount}) - Attending</div>,
       sortable: true,
       selector: (row) => row.guest,
       cell: (row) => <Guest jsonString={row.guests} />,
@@ -91,6 +116,17 @@ const Table = ({ data }) => {
         display: "grid",
         gridTemplateColumns: "1fr",
       },
+    },
+    {
+      name: "Has dietaryRestriction",
+      sortable: true,
+      selector: (row) => row.hasDietaryRestriction,
+      cell: (row) => <div>{row.hasDietaryRestriction ? "true" : "false"}</div>,
+    },
+    {
+      name: "Dietary Restriction",
+      selector: (row) => row.dietaryRestriction,
+      sortable: true,
     },
     {
       name: "Edit",
@@ -114,6 +150,10 @@ const Table = ({ data }) => {
         onChange={(e) => setFilterText(e.target.value)}
         placeholder="Search first or last name"
       ></Input>
+      <Box>Attendance total</Box>
+      <Box>Both: {bothCount + guestBothCount}</Box>
+      <Box>Reception total: {receptionCount + guestReceptionCount}</Box>
+      <Box>Ceremony total: {ceremonyCount + guestCeremonyCount}</Box>
       <DataTable title="Guest List" columns={columns} data={filteredItems} />
     </Box>
   );
