@@ -52,7 +52,7 @@ const Table = ({ data }) => {
   // console.log("guestBothCount", guestBothCount);
   // console.log("guestReceptionCount", guestReceptionCount);
   // console.log("guestCeremonyCount", guestCeremonyCount);
-  const attendanceList = data.reduce((prev, guest) => {
+  const attendanceList = data?.reduce((prev, guest) => {
     let guestArr = [
       {
         name: `${guest.firstName} ${guest.lastName}`,
