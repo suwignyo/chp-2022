@@ -74,7 +74,7 @@ export async function getStaticPaths() {
   };
 }
 
-export async function getServerSideProps({ params }) {
+export async function getStaticProps({ params }) {
   const { id } = params;
   const { data } = await supabase
     .from("guest")
@@ -85,6 +85,7 @@ export async function getServerSideProps({ params }) {
     props: {
       guest: data,
     },
+    revalidate: 5
   };
 }
 
