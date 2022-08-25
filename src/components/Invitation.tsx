@@ -96,24 +96,33 @@ export const Invitation = () => {
         <Text display="block" color="burgundy" fontSize="20px">
           St. Josephine Bakhita
         </Text>
-        {/* <Text display="block" color="burgundy" fontSize="20px">
-          Mississauga, ON, Canada
-        </Text> */}
+        <Text
+          display="block"
+          color="burgundy"
+          fontSize="20px"
+          textAlign={"center"}
+        >
+          3200 Thomas St, Mississauga, ON, L5M 0N7
+        </Text>
         <Text display="block" color="burgundy" fontSize="20px">
           October, 15 2022
         </Text>
         <Divider width="10" height="4px" my="4" bg="petal" />
-
         <Image height="48px" width="48px" src={barnImage.src}></Image>
         <Text display="block" color="burgundy" fontSize="20px">
           Country Heritage Park
         </Text>
-        {/* <Text display="block" color="burgundy" fontSize="20px">
+        <Text display="block" color="burgundy" fontSize="20px">
           Gambrel Barn
-        </Text> */}
-        {/* <Text display="block" color="burgundy" fontSize="20px">
-          Milton, ON, Canada
-        </Text> */}
+        </Text>
+        <Text
+          display="block"
+          color="burgundy"
+          fontSize="20px"
+          textAlign="center"
+        >
+          8560 Tremaine Rd, Milton, ON, L9T 2X3
+        </Text>
         <Text display="block" color="burgundy" fontSize="20px" mb="36px">
           October, 16 2022
         </Text>
