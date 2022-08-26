@@ -53,7 +53,7 @@ export const Invitation = () => {
   // );
   const scrollAnimation = `${arrow} infinite 1s`;
 
-  const weddingDate = new Date(2022, 10, 15);
+  const weddingDate = new Date(2022, 9, 15);
 
   return (
     <>
