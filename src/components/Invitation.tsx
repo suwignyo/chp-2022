@@ -96,6 +96,9 @@ export const Invitation = () => {
         <Text display="block" color="burgundy" fontSize="20px">
           St. Josephine Bakhita
         </Text>
+        <Text display="block" color="burgundy" fontSize="20px" my={3}>
+          1pm-2.30pm
+        </Text>
         <Text
           display="block"
           color="burgundy"
@@ -114,6 +117,9 @@ export const Invitation = () => {
         </Text>
         <Text display="block" color="burgundy" fontSize="20px">
           Gambrel Barn
+        </Text>
+        <Text display="block" color="burgundy" fontSize="20px" my={3}>
+          5pm-midnight
         </Text>
         <Text
           display="block"
