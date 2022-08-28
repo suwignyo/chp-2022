@@ -57,6 +57,8 @@ const Table = ({ data }) => {
       {
         name: `${guest.firstName} ${guest.lastName}`,
         attending: guest.attending,
+        email: guest.email,
+        phoneNumber: guest.phoneNumber,
       },
     ];
     if (guest.hasGuest) {
